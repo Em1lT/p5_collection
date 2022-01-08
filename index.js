@@ -1,8 +1,9 @@
-let humans = []
+let humans = [];
+
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    createSurvivors(10)
+    createCanvas(windowWidth / 2, windowHeight / 2);
+    createSurvivors(2)
     createInfected()
 }
 
@@ -11,8 +12,15 @@ function draw() {
   updateScreen()
 }
 
+function reset() {
+    humans = [];
+    createSurvivors(10)
+    createInfected()
+}
+
 function createSurvivors (num) {
     for (let i = 0; i < num; i++) {
+        console.log(width)
         humans[i] = new Ball(30, random(width), random(height))
     }
 }

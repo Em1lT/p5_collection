@@ -22,7 +22,7 @@ class Ball {
 
     intersect(other) {
         const d = dist(this.loc.x, this.loc.y, other.loc.x, other.loc.y);
-        if (d < this.size + other.size) {
+        if (d != 0 && d < (this.size + other.size) / 2) {
           return true;
         } else {
           return false;
