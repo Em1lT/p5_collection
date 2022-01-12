@@ -40,7 +40,7 @@ class Ball {
             this.loc.y = height
         }
         this.heading += 0.3 * random(-1, 1);
-        this.loc.x += this.speed * cos(this.heading);
-        this.loc.y += this.speed * sin(this.heading);
+        let v = createVector(this.speed * cos(this.heading),this.speed * sin(this.heading))
+        this.loc.add(v)
     }
 }

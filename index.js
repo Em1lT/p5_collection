@@ -20,7 +20,6 @@ function reset() {
 
 function createSurvivors (num) {
     for (let i = 0; i < num; i++) {
-        console.log(width)
         humans[i] = new Ball(30, random(width), random(height))
     }
 }
