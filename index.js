@@ -1,6 +1,5 @@
 let humans = [];
 
-
 function setup() {
     createCanvas(windowWidth / 2, windowHeight / 2);
     createSurvivors(2)
@@ -13,7 +12,6 @@ function draw() {
 }
 
 function reset() {
-    humans = [];
     createSurvivors(10)
     createInfected()
 }
