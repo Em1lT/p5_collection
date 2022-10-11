@@ -9,6 +9,7 @@ class Player {
 
 	update(walls) {
 		this.pos = createVector(mouseX, mouseY);
+		this.rays = [];
 		for (let i = 0; i <= 360; i += this.radiusPoints) {
 			const x = cos(i) * 10 * this.pos.x;
 			const y = sin(i) * 10 * this.pos.y;
