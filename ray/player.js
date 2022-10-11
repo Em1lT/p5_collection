@@ -11,52 +11,47 @@ class Player {
 		for (let i = 0; i <= 360; i += this.radiusPoints) {
 			const x = cos(i) * 50 * this.pos.x;
 			const y = sin(i) * 50 * this.pos.y;
-			let closest;
-			let closestDist = 10000;
-			for (let wall of walls) {
-				const ray = this.intersect(
-					this.pos.x,
-					this.pos.y,
-					x,
-					y,
-					wall.pos.x,
-					wall.pos.y,
-					wall.pos2.x,
-					wall.pos2.y
-				);
-				if (!ray) continue;
-				const dis = dist(
-					ray.x,
-					ray.y,
-					this.pos.x,
-					this.pos.y
-				);
-
-				if (dis === 0) {
-					closest = ray;
-					continue;
-				}
-
-				if (dis < closestDist) {
-					closest = ray;
-					closestDist = dis;
-				}
-			}
+			const closest = this.closestWall(x, y, walls);
 			this.rays.push(
-				createVector(
-					closest?.x || cos(i) * 50 * this.pos.x,
-					closest?.y || sin(i) * 50 * this.pos.y
-				)
+				createVector(closest?.x || x, closest?.y || y)
 			);
 		}
+	}
+	closestWall(x, y, walls) {
+		let closest;
+		let closestDist;
+		for (let wall of walls) {
+			const ray = this.intersect(
+				this.pos.x,
+				this.pos.y,
+				x,
+				y,
+				wall.pos.x,
+				wall.pos.y,
+				wall.pos2.x,
+				wall.pos2.y
+			);
+			if (!ray) continue;
+			const dis = dist(ray.x, ray.y, this.pos.x, this.pos.y);
+
+			if (dis === 0) {
+				continue;
+			}
+
+			if (!closestDist || dis < closestDist) {
+				closest = ray;
+				closestDist = dis;
+			}
+		}
+		return closest;
 	}
 
 	render() {
 		for (let ray of this.rays) {
-			strokeWeight(0.3)
+			strokeWeight(0.3);
 			line(this.pos.x, this.pos.y, ray.x, ray.y);
 		}
-		strokeWeight(1)
+		strokeWeight(1);
 	}
 
 	// line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
