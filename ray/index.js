@@ -18,7 +18,7 @@ function setup() {
 
 function draw() {
 	background(220);
-	frameRate(0);
+	frameRate(30);
 	angleMode(DEGREES);
 	player.update(walls);
 	player.render();
