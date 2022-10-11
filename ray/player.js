@@ -3,7 +3,7 @@ class Player {
 		this.pos = createVector(x, y);
 		this.numOfRays = 10;
 		this.rays = [];
-		this.points = 10;
+		this.points = 20;
 		this.radiusPoints = 360 / this.points;
 	}
 
@@ -11,14 +11,15 @@ class Player {
 		this.pos = createVector(mouseX, mouseY);
 		this.rays = [];
 		for (let i = 0; i <= 720; i += this.radiusPoints) {
-			const x = cos(radians(i)) * this.radiusPoints;
-			const y = sin(radians(i)) * this.radiusPoints;
+			const x = cos(i) * i * this.radiusPoints;
+			const y = sin(i) * i * this.radiusPoints;
 			const closest = this.closestWall(x, y, walls);
 			this.rays.push(
 				createVector(closest?.x || x, closest?.y || y)
 			);
 		}
 	}
+
 	closestWall(x, y, walls) {
 		let closest;
 		let closestDist;
@@ -49,8 +50,8 @@ class Player {
 	}
 
 	render() {
+		strokeWeight(0.3);
 		for (let ray of this.rays) {
-			strokeWeight(0.3);
 			line(this.pos.x, this.pos.y, ray.x, ray.y);
 		}
 		strokeWeight(1);
