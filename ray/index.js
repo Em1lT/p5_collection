@@ -4,7 +4,8 @@ let numOfWalls = 10;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	player = new Player(random(width), random(height));
+	// player = new Player(random(width), random(height));
+	player = new Player(width / 2, height / 2);
 	for (let i = 0; i < numOfWalls; i++) {
 		const wall = new Wall(
 			random(width),
