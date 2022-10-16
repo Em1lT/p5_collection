@@ -31,20 +31,18 @@ function draw() {
 
     if (bullet) {
         if (bulletPos.x > width) {
-            console.log("here2");
-            bullet = true;
+            bullet = false;
             bulletPos = undefined;
+            return;
         }
-        console.log(bulletPos);
-        line(bulletPos.x, bulletPos.y, bulletPos.x + 10, bulletPos.y + 10);
-        bulletPos.add(0.1);
+        ellipse(bulletPos.x, bulletPos.y, 20);
+        bulletPos.add();
     }
 }
 
 function keyPressed() {
     if (keyCode === ENTER) {
         if (!bullet) {
-            console.log("here1");
             bulletPos = p5.Vector.add(degrVect, pos);
             bullet = true;
         }
