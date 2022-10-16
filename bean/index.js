@@ -1,40 +1,26 @@
-let humans = [];
+let pos
+let degrVect
+let degr = 0
 
 function setup() {
-    createCanvas(windowWidth / 2, windowHeight / 2);
-    createSurvivors(20)
-    createInfected()
+  createCanvas(400, 400);
+  pos = createVector(200,200)
 }
 
 function draw() {
   background(220);
-  updateScreen()
+  degrVect = createVector(sin(degr), cos(degr))
+  line(pos.x, pos.y, pos.x + degrVect.x * 5, pos.y + degrVect.y  * 5)
 }
 
-function reset() {
-    createSurvivors(10)
-    createInfected()
-}
-
-function createSurvivors (num) {
-    for (let i = 0; i < num; i++) {
-        humans[i] = new Ball(30, random(width), random(height))
-    }
-}
-
-function createInfected () {
-    const infected = humans[Math.round(random(humans.length))]
-    infected.infect()
-}
-
-function updateScreen () {
-  humans.map((h1) => {
-      h1.update();
-      h1.draw();
-      humans.map((h2) => {
-          if(h1.intersect(h2) && h2.infected) {
-              h1.infect()
-          }
-      })
-  })
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    degr++;
+  } else if (keyCode === RIGHT_ARROW) {
+    degr--;
+  } else if (keyCode === UP_ARROW) {
+    pos.add(degrVect.mult(10))
+  } else if (keyCode === DOWN_ARROW) {
+    pos.sub(degrVect.mult(10))
+  }
 }
