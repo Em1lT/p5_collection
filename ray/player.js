@@ -4,21 +4,33 @@ class Player {
 		this.numOfRays = 10;
 		this.rays = [];
 		this.points = 100;
+		this.fieldOfView = 60;
 		this.radiusPoints = 360 / this.points;
+        this.degrVect
+        this.degr = 0
 	}
 
 	update(walls) {
-		this.pos = createVector(mouseX, mouseY);
+		// this.pos = createVector(mouseX, mouseY);
 		this.rays = [];
-		for (let i = 0; i <= 360; i += this.radiusPoints) {
-			const x = this.pos.x + cos(i) * 1000;
-			const y = this.pos.y + sin(i) * 1000;
+		for (let i = 0; i <= this.fieldOfView; i += this.radiusPoints) {
+            const {x,y} = createVector(this.pos.x + sin(i) * 1000, this.pos.y + cos(i)* 1000)
 			const closest = this.closestWall(x, y, walls);
 			this.rays.push(
 				createVector(closest?.x || x, closest?.y || y)
 			);
 		}
 	}
+
+    updateAngle(value) {
+        console.log("here")
+        console.log(this.degr)
+        this.degr += value
+    }
+
+    move() {
+        this.pos.degrVect.add
+    }
 
 	closestWall(x, y, walls) {
 		let closest;

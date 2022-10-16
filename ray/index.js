@@ -28,3 +28,14 @@ function draw() {
 		wall.render();
 	}
 }
+
+function keyPressed() {
+	if (keyCode === LEFT_ARROW) {
+		player.updateAngle(1);
+	} else if (keyCode === RIGHT_ARROW) {
+		player.updateAngle(-1);
+	} else if (keyCode === UP_ARROW) {
+		player.move()
+	} else if (keyCode === DOWN_ARROW) {
+	}
+}
