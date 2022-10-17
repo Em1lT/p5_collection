@@ -37,7 +37,7 @@ function draw() {
         }
         ellipse(pos.x + bulletPos.x, pos.y + bulletPos.y, 20);
         const m = bulletPos.copy()
-        bulletPos.add(m);
+        bulletPos.add(m.normalize());
     }
 }
 
