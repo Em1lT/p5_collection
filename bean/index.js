@@ -35,15 +35,16 @@ function draw() {
             bulletPos = undefined;
             return;
         }
-        ellipse(bulletPos.x, bulletPos.y, 20);
-        bulletPos.add();
+        ellipse(pos.x + bulletPos.x, pos.y + bulletPos.y, 20);
+        const m = bulletPos.copy()
+        bulletPos.add(m);
     }
 }
 
 function keyPressed() {
     if (keyCode === ENTER) {
         if (!bullet) {
-            bulletPos = p5.Vector.add(degrVect, pos);
+            bulletPos = degrVect.copy()// p5.Vector.add(degrVect, pos);
             bullet = true;
         }
     }
