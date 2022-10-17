@@ -3,6 +3,7 @@ let degrVect;
 let degr = 0;
 let bullet = false;
 let bulletPos;
+let size = 20;
 
 function setup() {
     createCanvas(400, 400);
@@ -12,7 +13,7 @@ function setup() {
 function draw() {
     background(220);
     degrVect = createVector(sin(degr), cos(degr));
-    line(pos.x, pos.y, pos.x + degrVect.x * 20, pos.y + degrVect.y * 20);
+    line(pos.x, pos.y, pos.x + degrVect.x * size, pos.y + degrVect.y * size);
     if (keyIsDown(LEFT_ARROW)) {
         degr += 0.1;
     }
@@ -35,7 +36,7 @@ function draw() {
             bulletPos = undefined;
             return;
         }
-        ellipse(pos.x + bulletPos.x * 20, pos.y + bulletPos.y * 20, 20);
+        ellipse(pos.x + bulletPos.x * size, pos.y + bulletPos.y * size, size);
         const m = bulletPos.copy()
         bulletPos.add(m.normalize());
     }
