@@ -28,11 +28,11 @@ function draw() {
 	}
 
 	if (keyIsDown(UP_ARROW)) {
-		pos.add(degrVect.mult(0.5));
+		pos.add(degrVect.mult(2.5));
 	}
 
 	if (keyIsDown(DOWN_ARROW)) {
-		pos.sub(degrVect.mult(0.5));
+		pos.sub(degrVect.mult(2.5));
 	}
 
 	if (bullet) {
