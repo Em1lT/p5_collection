@@ -36,10 +36,8 @@ function draw() {
 	}
 
 	if (bullet) {
-		const { bulX, bulY } = {
-			bulX: pos.x + bulletPos.x,
-			bulY: pos.y + bulletPos.y,
-		};
+		const { x: bulX, y: bulY } = bulletPos;
+
 		if (bulX > height || bulX < 0) {
 			bullet = false;
 			bulletPos = undefined;
@@ -51,7 +49,7 @@ function draw() {
 			bulletPos = undefined;
 			return;
 		}
-		ellipse(pos.x + bulletPos.x, pos.y + bulletPos.y, size);
+		ellipse(bulX, bulY, size);
 		const m = bulletPos.copy();
 		bulletPos.add(m.normalize().mult(4));
 	}
@@ -60,7 +58,7 @@ function draw() {
 function keyPressed() {
 	if (keyCode === ENTER) {
 		if (!bullet) {
-			bulletPos = degrVect.copy(); // p5.Vector.add(degrVect, pos);
+			bulletPos = degrVect.copy() // p5.Vector.add(degrVect, pos);
 			bullet = true;
 		}
 	}
