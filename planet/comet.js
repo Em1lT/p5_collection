@@ -8,6 +8,7 @@ class Comet {
 	update() {}
 
 	render(planet) {
+		fill("black");
 		const planetPos = planet.coordinates();
 		const cometPos = this.coordinates();
 
@@ -20,9 +21,10 @@ class Comet {
 			this.position.y
 		);
 
-		if (dis < 400) {
+		if (dis < planet.influence) {
 			this.vel = p5.Vector.sub(planetPos, cometPos);
 		}
+
 		this.vel.limit(0.05);
 		this.acc.add(this.vel);
 		this.position.add(this.acc);

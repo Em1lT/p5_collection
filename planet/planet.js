@@ -1,15 +1,21 @@
-
-
 class Planet {
-	constructor(pos) {
-		this.position = pos;
+    constructor(pos, mass) {
+        this.position = pos;
+        this.mass = mass;
+        this.influence = mass * 10;
+    }
+    render() {
+        fill("red");
+        strokeWeight();
+        ellipse(this.position.x, this.position.y, this.mass);
+    }
 
-	}
-	render () {
-	    ellipse(this.position.x, this.position.y, 50);
-	}
+    renderGravityArea() {
+        fill("grey");
+        ellipse(this.position.x, this.position.y, this.influence * 2);
+    }
 
-	coordinates () {
-		return this.position;
-	}
+    coordinates() {
+        return this.position;
+    }
 }
