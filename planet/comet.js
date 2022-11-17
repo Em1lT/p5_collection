@@ -1,0 +1,6 @@
+class Comet {
+
+	constructor(pos) {
+	
+	}
+}
