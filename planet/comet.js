@@ -2,7 +2,7 @@ class Comet {
 	constructor(pos) {
 		this.path = [];
 		this.position = pos;
-		this.acc = createVector(0, 2);
+		this.acc = createVector(2, 2);
 		this.vel = createVector(0, 0);
 	}
 	update() {}
@@ -13,8 +13,16 @@ class Comet {
 
 		let oldComet = cometPos.copy();
 
-		this.vel = p5.Vector.sub(planetPos, cometPos);
-		// let dis = dist(planet_pos.x, planet_pos.y, comet.x, comet.y);
+		let dis = dist(
+			planetPos.x,
+			planetPos.y,
+			this.position.x,
+			this.position.y
+		);
+
+		if (dis < 400) {
+			this.vel = p5.Vector.sub(planetPos, cometPos);
+		}
 		this.vel.limit(0.05);
 		this.acc.add(this.vel);
 		this.position.add(this.acc);
