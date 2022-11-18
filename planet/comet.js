@@ -46,6 +46,18 @@ class Comet {
 		if(this.position.x > width * 2) {
 			this.outOfZone = true;
 		}
+
+		if(this.position.x < width * -2) {
+			this.outOfZone = true;
+		}
+
+		if(this.position.y > height * 2) {
+			this.outOfZone = true;
+		}
+
+		if(this.position.y < height * -2) {
+			this.outOfZone = true;
+		}
 	}
 
 	checkPlanetInfluence(distance, influence) {
