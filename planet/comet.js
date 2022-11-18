@@ -2,47 +2,72 @@ class Comet {
 	constructor(pos) {
 		this.path = [];
 		this.position = pos;
-		this.acc = createVector(2, 2);
+		this.acc = createVector(random(10), 0);
 		this.vel = createVector(0, 0);
+		this.outOfZone = false;
+		this.pathLength = 100;
 	}
-	update() {}
-
-	render(planet) {
+	update(planet) {
 		fill("black");
 		const planetPos = planet.coordinates();
-		const cometPos = this.coordinates();
+		const cometPos = this.coordinates().copy();
 
-		let oldComet = cometPos.copy();
-
-		let dis = dist(
+		let dis = this.calclulateDistance(
 			planetPos.x,
 			planetPos.y,
 			this.position.x,
 			this.position.y
 		);
-
-		if (dis < planet.influence) {
+		if (this.checkPlanetInfluence(dis, planet.influence)) {
 			this.vel = p5.Vector.sub(planetPos, cometPos);
+			this.vel.limit(0.001 * planet.mass);
 		}
 
-		this.vel.limit(0.05);
 		this.acc.add(this.vel);
 		this.position.add(this.acc);
 		this.vel = createVector(0, 0);
 
-		this.path.push({
-			p1: createVector(oldComet.x, oldComet.y),
-			p2: createVector(this.position.x, this.position.y),
-		});
+		this.addPath(
+			cometPos.x,
+			cometPos.y,
+			this.position.x,
+			this.position.y
+		);
+		this.checkBorder();
+		this.checkPathLength();
+	}
 
-		ellipse(this.position.x, this.position.y, 10);
-		if (this.path.length >= 1000) {
+	render() {
+		ellipse(this.position.x, this.position.y, 20);
+		this.renderPath();
+	}
+
+	checkBorder() {
+		if(this.position.x > width * 2) {
+			this.outOfZone = true;
+		}
+	}
+
+	checkPlanetInfluence(distance, influence) {
+		return distance < influence;
+	}
+
+	addPath(x1, y1, x2, y2) {
+		this.path.push({
+			p1: createVector(x1, y1),
+			p2: createVector(x2, y2),
+		});
+	}
+	checkPathLength() {
+		if (this.path.length >= this.pathLength) {
 			this.path.shift();
 			this.path.shift();
 		}
+	}
 
+	renderPath() {
 		for (let i = 0; i < this.path.length; i++) {
-			const s = map(i, 0.5, 1000, 0.1, 2);
+			const s = map(i, 0, this.pathLength, 0, 2);
 			strokeWeight(s);
 			if (i % 2 == 0) {
 				line(
@@ -53,6 +78,10 @@ class Comet {
 				);
 			}
 		}
+	}
+
+	calclulateDistance(x1, y1, x2, y2) {
+		return dist(x1, y1, x2, y2);
 	}
 
 	coordinates() {

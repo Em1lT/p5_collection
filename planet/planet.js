@@ -6,12 +6,13 @@ class Planet {
     }
     render() {
         fill("red");
-        strokeWeight();
+	strokeWeight(0)
         ellipse(this.position.x, this.position.y, this.mass);
     }
 
     renderGravityArea() {
-        fill("grey");
+        fill("lightgrey");
+	strokeWeight(0)
         ellipse(this.position.x, this.position.y, this.influence * 2);
     }
 
