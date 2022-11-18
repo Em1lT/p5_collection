@@ -1,8 +1,8 @@
 class Comet {
-	constructor(pos) {
+	constructor(pos, acc) {
 		this.path = [];
 		this.position = pos;
-		this.acc = createVector(random(10), 0);
+		this.acc = acc;
 		this.vel = createVector(0, 0);
 		this.outOfZone = false;
 		this.pathLength = 100;
