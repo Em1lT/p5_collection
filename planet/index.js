@@ -30,7 +30,7 @@ function draw() {
         line(snap_start.x, snap_start.y, mouseX, mouseY);
         snap_end = createVector(mouseX, mouseY);
         let d = dist(snap_start.x, snap_start.y, mouseX, mouseY);
-        text(Math.floor(d) / 10, mouseX + 20, mouseY + 20);
+        text(Math.floor(d) / 20, mouseX + 20, mouseY + 20);
     }
 }
 
@@ -46,7 +46,7 @@ function mouseReleased() {
     shoot = true;
     const acc = p5.Vector.sub(snap_start, snap_end);
     const d = dist(snap_start.x, snap_start.y, snap_end.x, snap_end.y);
-    acc.mult((0.1 * d) / 10);
+    acc.mult((0.1 * d) / 20);
     acc.limit(10);
     comets.push(new Comet(snap_start, acc));
 }
