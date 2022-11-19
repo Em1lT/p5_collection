@@ -7,23 +7,28 @@ class Comet {
 		this.outOfZone = false;
 		this.pathLength = 100;
 	}
-	update(planet) {
+	update(planets) {
 		fill("black");
-		const planetPos = planet.coordinates();
+
 		const cometPos = this.coordinates().copy();
 
-		let dis = this.calclulateDistance(
-			planetPos.x,
-			planetPos.y,
-			this.position.x,
-			this.position.y
-		);
-		if (this.checkPlanetInfluence(dis, planet.influence)) {
-			this.vel = p5.Vector.sub(planetPos, cometPos);
-			this.vel.limit(0.001 * planet.mass);
+		for (planet of planets) {
+			const planetPos = planet.coordinates();
+			let dis = this.calclulateDistance(
+				planetPos.x,
+				planetPos.y,
+				this.position.x,
+				this.position.y
+			);
+			if (this.checkPlanetInfluence(dis, planet.influence)) {
+				this.vel = p5.Vector.sub(planetPos, cometPos);
+				const gForce = map(dis, 0, width, 0, 1)
+				this.vel.limit(gForce * 0.02 * planet.mass);
+			}
 		}
 
 		this.acc.add(this.vel);
+		this.acc.limit(8)
 		this.position.add(this.acc);
 		this.vel = createVector(0, 0);
 
@@ -43,19 +48,19 @@ class Comet {
 	}
 
 	checkBorder() {
-		if(this.position.x > width * 2) {
+		if (this.position.x > width * 2) {
 			this.outOfZone = true;
 		}
 
-		if(this.position.x < width * -2) {
+		if (this.position.x < width * -2) {
 			this.outOfZone = true;
 		}
 
-		if(this.position.y > height * 2) {
+		if (this.position.y > height * 2) {
 			this.outOfZone = true;
 		}
 
-		if(this.position.y < height * -2) {
+		if (this.position.y < height * -2) {
 			this.outOfZone = true;
 		}
 	}
