@@ -9,7 +9,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     planet = new Planet(createVector(width / 4, height / 2), 40);
     planets.push(planet);
-    planets.push(new Planet(createVector(width/ 2 + 500, height/2 ), 20));
+    planets.push(new Planet(createVector(width / 2 + 500, height / 2), 20));
 }
 
 function draw() {
