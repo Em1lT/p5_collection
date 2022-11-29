@@ -14,7 +14,6 @@ function setup() {
 
 function draw() {
     background(220);
-
     for (let planet of planets) {
         planet.renderGravityArea();
         planet.render();

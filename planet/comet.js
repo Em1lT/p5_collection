@@ -12,6 +12,7 @@ class Comet {
 
 		const cometPos = this.coordinates().copy();
 
+		// Move the other way around
 		for (planet of planets) {
 			const planetPos = planet.coordinates();
 			let dis = this.calclulateDistance(
@@ -20,15 +21,16 @@ class Comet {
 				this.position.x,
 				this.position.y
 			);
-			if (this.checkPlanetInfluence(dis, planet.influence)) {
-				this.vel = p5.Vector.sub(planetPos, cometPos);
-				const gForce = map(dis, 0, width, 0, 1)
-				this.vel.limit(gForce * 0.02 * planet.mass);
+			if (!this.checkPlanetInfluence(dis, planet.influence)) {
+				continue;
 			}
+			this.vel = p5.Vector.sub(planetPos, cometPos);
+			const gForce = map(dis, 0, width, 0.15, 1.3);
+			this.vel.limit(gForce * 0.01 * planet.mass);
 		}
 
 		this.acc.add(this.vel);
-		this.acc.limit(8)
+		this.acc.limit(8);
 		this.position.add(this.acc);
 		this.vel = createVector(0, 0);
 
