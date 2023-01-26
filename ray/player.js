@@ -3,8 +3,8 @@ class Player {
 		this.pos = createVector(x, y);
 		this.numOfRays = 10;
 		this.rays = [];
-		this.points = 100;
-		this.fieldOfView = 60;
+		this.points = 300;
+		this.fieldOfView = 90;
 		this.radiusPoints = 360 / this.points;
         this.degrVect
         this.degr = 0
@@ -23,7 +23,6 @@ class Player {
 	}
 
     updateAngle(value) {
-        console.log("here")
         console.log(this.degr)
         this.degr += value
     }
