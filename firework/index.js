@@ -1,12 +1,12 @@
 
 fireworks = [];
 explosions = [];
-const all = 100;
+const numOfFireworks = 100;
 const year = new Date().getFullYear();
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);  
-	for(let i = 0; i < all; i++) {
+	for(let i = 0; i < numOfFireworks; i++) {
 		fireworks[i] = new Firework(); 
 	}
 }

@@ -1,9 +1,10 @@
 class Firework {
 	constructor() {
-		this.x = random(0,windowWidth);
+		this.x = windowWidth / 2;
 		this.startY = random(windowHeight + 100, windowHeight + 1000);
 		this.y = this.startY; 
-		this.speed = random(5,9);
+		this.offset = random(-1,1)
+		this.speed = random(1,3);
 		this.blowHeight = random(0, 400);
 		this.expColor = color(random(100,255), random(0,255), random(0,255));
 		this.size = random(5,20);
@@ -17,6 +18,7 @@ class Firework {
 	move(){
 		if(this.y > this.blowHeight) {
 			this.y -= this.speed;
+			this.x += this.offset;
 		} else {
 			explosions.push(new Explosion(this.x,this.y, this.expColor));	
 			this.y = this.startY;
