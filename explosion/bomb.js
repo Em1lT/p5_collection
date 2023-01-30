@@ -1,3 +1,6 @@
+let size = 20;
+let radius = 360;
+let space = radius / size;
 class Bomb {
   constructor(x, y, size = 10) {
 	this.x = random(300)

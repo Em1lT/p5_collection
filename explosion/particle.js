@@ -15,7 +15,7 @@ class Particle {
     this.pos.add(this.acc);
     this.vel = createVector(0, 0);
     this.size -= 0.1;
-    if (this.pos.y > width) this.delete = true;
+    if (this.size < 0) this.delete = true;
   }
   draw() {
     ellipse(this.pos.x, this.pos.y, this.size);
