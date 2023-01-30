@@ -1,28 +1,22 @@
-let particles = [];
-let ball;
-let size = 20;
-let radius = 360;
-let space = radius / size;
+let bombs = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  ball = createVector(width / 2, height / 2, 10, 10);
-
-  for (let i = 0; i < size; i++) {
-    const part = new Particle(ball.x + sin(i), ball.y + cos(i));
-    particles.push(part);
-  }
+  b1 = new Bomb(100, 100, 20);
+  b2 = new Bomb(90, 200, 30);
+  b3 = new Bomb(110, 300, 20);
+  b4 = new Bomb(150, 400, 30);
+  bombs.push(...[b1, b2, b3, b4]);
 }
 
 function draw() {
   background(200);
   frameRate(30);
 
-  for (let i = 0; i < particles.length; i++) {
-    particles[i].update(i);
-    particles[i].draw();
-    if (particles[i].delete) {
-      particles.splice(i, 1);
+  for (let i = 0; i < bombs.length; i++) {
+    bombs[i].draw();
+    if (bombs[i].delete) {
+      bombs.splice(i, 1);
     }
   }
 }
