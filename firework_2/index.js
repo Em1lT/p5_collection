@@ -21,7 +21,10 @@ function draw() {
     firework.move();
   }
 
-  for (let bomb of bombs) {
+  for (let [i, bomb] of bombs.entries()) {
     bomb.draw();
+    if (bomb.delete) {
+      this.bombs[i].splice(i, 1);
+    }
   }
 }
