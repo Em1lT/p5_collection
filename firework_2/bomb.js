@@ -1,5 +1,5 @@
 class Bomb {
-  constructor(x, y, size = 10) {
+  constructor(x, y, size = 10, color) {
     this.pos = createVector(x, y);
     this.size = size;
     this.radius = 360;
@@ -7,6 +7,7 @@ class Bomb {
     this.particles = [];
     this.delete = false;
     this.expSetp = false;
+    this.color = color;
   }
 
   update() {}
@@ -17,7 +18,12 @@ class Bomb {
 
   explosionSetup() {
     for (let i = 0; i < this.size; i++) {
-      const part = new Particle(this.pos.x + sin(i), this.pos.y + cos(i));
+      const part = new Particle(
+        this.pos.x + sin(i),
+        this.pos.y + cos(i),
+        10,
+        this.color
+      );
       this.particles.push(part);
     }
   }

@@ -1,10 +1,11 @@
 class Particle {
-  constructor(x, y, size = 10) {
+  constructor(x, y, size = 10, color) {
     this.pos = createVector(x, y);
     this.size = size;
     this.acc = createVector(0, 0);
     this.vel = createVector(0, 0);
     this.gravity = createVector(0, 0.098);
+    this.color = color;
     this.delete = false;
   }
 
@@ -18,6 +19,7 @@ class Particle {
     if (this.size < 0) this.delete = true;
   }
   draw() {
+    fill(this.color);
     ellipse(this.pos.x, this.pos.y, this.size);
   }
 }

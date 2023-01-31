@@ -1,5 +1,6 @@
 fireworks = [];
 explosions = [];
+bombs = [];
 const numOfFireworks = 100;
 const year = new Date().getFullYear();
 
@@ -18,5 +19,9 @@ function draw() {
   for (let firework of fireworks) {
     firework.draw();
     firework.move();
+  }
+
+  for (let bomb of bombs) {
+    bomb.draw();
   }
 }
