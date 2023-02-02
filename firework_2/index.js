@@ -21,10 +21,12 @@ function draw() {
     firework.move();
   }
 
-  for (let [i, bomb] of bombs.entries()) {
-    bomb.draw();
-    if (bomb.delete) {
-      this.bombs[i].splice(i, 1);
+  for (let i = 0; i < this.bombs.length; i++) {
+    this.bombs[i].draw();
+    if (this.bombs[i].delete) {
+      this.bombs[i].delete = false;
+      this.bombs[i].expSetp = false;
+      this.bombs.splice(i, 1);
     }
   }
 }

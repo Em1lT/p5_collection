@@ -33,6 +33,9 @@ class Bomb {
       this.explosionSetup();
       this.expSetp = true;
     }
+    if (this.particles.length == 0) {
+      this.delete = true;
+    }
 
     for (let i = 0; i < this.particles.length; i++) {
       this.particles[i].update(i);
