@@ -7,6 +7,7 @@ class Particle {
     this.gravity = createVector(0, 0.098);
     this.color = color;
     this.delete = false;
+    this.reducer = 0.1;
   }
 
   update(i) {
@@ -14,10 +15,11 @@ class Particle {
     this.vel.add(this.gravity);
     this.acc.add(this.vel);
     this.pos.add(this.acc);
+    this.size -= this.reducer;
     this.vel = createVector(0, 0);
-    this.size -= 0.1;
     if (this.size < 0) this.delete = true;
   }
+
   draw() {
     fill(this.color);
     ellipse(this.pos.x, this.pos.y, this.size);
