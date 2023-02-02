@@ -10,10 +10,13 @@ class Bomb {
     this.color = color;
   }
 
-  update() {}
-
   draw() {
-    this.explosion();
+    if (!this.expSetp) {
+      this.explosionSetup();
+      this.expSetp = true;
+    } else {
+      this.explosion();
+    }
   }
 
   explosionSetup() {
@@ -29,10 +32,6 @@ class Bomb {
   }
 
   explosion() {
-    if (!this.expSetp) {
-      this.explosionSetup();
-      this.expSetp = true;
-    }
     if (this.particles.length == 0) {
       this.delete = true;
     }

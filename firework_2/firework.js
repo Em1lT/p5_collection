@@ -7,7 +7,6 @@ class Firework {
     this.blowHeight = random(0, 400);
     this.expColor = color(random(100, 255), random(0, 255), random(0, 255));
     this.size = random(5, 20);
-    this.bomb = new Bomb(this.x, this.blowHeight, this.size, this.expColor);
   }
 
   draw() {
@@ -20,7 +19,7 @@ class Firework {
       this.y -= this.speed;
     } else {
       this.y = this.startY;
-      bombs.push(this.bomb);
+      bombs.push(new Bomb(this.x, this.blowHeight, this.size, this.expColor));
     }
   }
 }
