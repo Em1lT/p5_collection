@@ -1,18 +1,18 @@
-let x = 0;
-let mouse, center;
+let angle = 0;
+let pos;
 
 function setup() {
   createCanvas(400, 400);
-  center = createVector(200, 200);
-  rectMode(CENTER);
+  pos = createVector(width / 2, height / 2);
+  angleMode(DEGREES);
 }
 
 function draw() {
-  background(220);
-  mouse = createVector(mouseX, mouseY);
-  line(mouse.x, mouse.y, center.x, center.y);
+  createCanvas(windowWidth, windowHeight);
+  translate(pos.x, pos.y);
+  rotate(angle);
+  rectMode(CENTER);
+  rect(0, 0, 100, 50);
 
-  // const rotation = map(mouse.x, 0, width, 0, TWO_PI);
-  rotate(x++);
-  rect(center.x, center.y, 100, 200);
+  angle = angle + 1;
 }
