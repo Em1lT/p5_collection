@@ -1,7 +1,6 @@
 // Initialize the Image Classifier method with MobileNet
 let videoId;
 let loaded = false;
-
 let facemesh;
 
 // When the model is loaded
@@ -14,9 +13,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   capture = createCapture(VIDEO);
   capture.size(200, 200);
-  videoId = capture.id();
-  console.log(capture);
-  facemesh = ml5.facemesh(videoId, modelLoaded);
+  facemesh = ml5.facemesh(capture, modelLoaded);
 }
 
 function correct(value) {
