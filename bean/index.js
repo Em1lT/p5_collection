@@ -1,35 +1,37 @@
-let pos;
-let degrVect;
-let degr = 0;
-let bullet = false;
-let bulletPos;
-let size = 20;
+let player;
 
 function setup() {
-  createCanvas(windowWidth / 2, windowHeight / 2);
+  createCanvas(windowWidth, windowHeight);
   pos = createVector(200, 200);
+  player = new Player(createVector(windowWidth / 2, windowHeight / 2));
+}
+
+function keys() {
+  if (keyIsDown(LEFT_ARROW)) {
+    player.turn(0.1);
+  }
+
+  if (keyIsDown(RIGHT_ARROW)) {
+    player.turn(-0.1);
+  }
+
+  if (keyIsDown(UP_ARROW)) {
+    player.move(2.5);
+  }
+
+  if (keyIsDown(DOWN_ARROW)) {
+    player.move(-2.5);
+  }
 }
 
 function draw() {
   background(220);
-  degrVect = createVector(sin(degr), cos(degr));
-  line(pos.x, pos.y, pos.x + degrVect.x * size, pos.y + degrVect.y * size);
-  if (keyIsDown(LEFT_ARROW)) {
-    degr += 0.1;
-  }
+  frameRate(30);
+  keys();
+  player.update();
+  player.render();
 
-  if (keyIsDown(RIGHT_ARROW)) {
-    degr -= 0.1;
-  }
-
-  if (keyIsDown(UP_ARROW)) {
-    pos.add(degrVect.mult(2.5));
-  }
-
-  if (keyIsDown(DOWN_ARROW)) {
-    pos.sub(degrVect.mult(2.5));
-  }
-
+  /* 
   if (bullet) {
     const { x: bulX, y: bulY } = bulletPos;
 
@@ -49,13 +51,11 @@ function draw() {
     const m = bulletPos.copy();
     bulletPos.add(m.normalize().mult(4));
   }
+  */
 }
 
 function keyPressed() {
   if (keyCode === ENTER) {
-    if (!bullet) {
-      bulletPos = degrVect.copy(); // p5.Vector.add(degrVect, pos);
-      bullet = true;
-    }
+    player.shoot();
   }
 }
