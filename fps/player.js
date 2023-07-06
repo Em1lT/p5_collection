@@ -19,36 +19,16 @@ class Player {
   update(walls) {
     this.degrVect = createVector(sin(this.degr), cos(this.degr));
     // this.pos = createVector(mouseX, mouseY);
-    stroke("red");
-    line(
-      this.pos.x,
-      this.pos.y,
-      this.pos.x + this.degrVect.x * 30,
-      this.pos.y + this.degrVect.y * 30
-    );
-    stroke("black");
-
-    line(
-      this.pos.x,
-      this.pos.y,
-      this.pos.x + this.degrVect.x + sin(this.degr + this.fieldOfView) * 30,
-      this.pos.y + this.degrVect.y + cos(this.degr + this.fieldOfView) * 30
-    );
-
-    line(
-      this.pos.x,
-      this.pos.y,
-      this.pos.x + this.degrVect.x + sin(this.degr - this.fieldOfView) * 30,
-      this.pos.y + this.degrVect.y + cos(this.degr - this.fieldOfView) * 30
-    );
-
     this.rays = [];
-    for (let i = -this.fieldOfView; i <= this.fieldOfView * 2; i++) {
+    for (let i = -this.fieldOfView; i <= this.fieldOfView; i += this.points) {
       const { x, y } = createVector(
         this.pos.x + this.degrVect.x + sin(this.degr + i) * 1000,
         this.pos.y + this.degrVect.y + cos(this.degr + i) * 1000
       );
       const closest = this.closestWall(x, y, walls);
+      if (closest) {
+        // if closes... render a wall in the bottom picture
+      }
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
     }
   }
@@ -83,6 +63,29 @@ class Player {
   }
 
   render() {
+    stroke("red");
+    line(
+      this.pos.x,
+      this.pos.y,
+      this.pos.x + this.degrVect.x * 30,
+      this.pos.y + this.degrVect.y * 30
+    );
+    stroke("black");
+
+    line(
+      this.pos.x,
+      this.pos.y,
+      this.pos.x + this.degrVect.x + sin(this.degr + this.fieldOfView) * 30,
+      this.pos.y + this.degrVect.y + cos(this.degr + this.fieldOfView) * 30
+    );
+
+    line(
+      this.pos.x,
+      this.pos.y,
+      this.pos.x + this.degrVect.x + sin(this.degr - this.fieldOfView) * 30,
+      this.pos.y + this.degrVect.y + cos(this.degr - this.fieldOfView) * 30
+    );
+
     strokeWeight(0.3);
     for (let ray of this.rays) {
       line(this.pos.x, this.pos.y, ray.x, ray.y);

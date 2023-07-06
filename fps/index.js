@@ -14,6 +14,9 @@ function setup() {
     );
     walls.push(wall);
   }
+
+  // splitting line
+  walls.push(new Wall(0, windowHeight / 2, windowWidth, windowHeight / 2));
 }
 
 function keys() {
@@ -37,8 +40,6 @@ function keys() {
 function draw() {
   background(220);
   frameRate(30);
-
-  line(0, windowHeight / 2, windowWidth, windowHeight / 2);
   angleMode(DEGREES);
   keys();
   player.update(walls);
