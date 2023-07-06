@@ -28,6 +28,11 @@ class Player {
     );
     for (let i = 0; i < this.bullets.length; i++) {
       this.bullets[i].update();
+      this.bullets[i].render();
+      if (this.bullets[i].checkForDelete()) {
+        //delete
+        this.bullets.splice(i);
+      }
     }
   }
 
