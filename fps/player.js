@@ -43,7 +43,7 @@ class Player {
     );
 
     this.rays = [];
-    for (let i = -40; i <= this.fieldOfView * 2; i++) {
+    for (let i = -this.fieldOfView; i <= this.fieldOfView * 2; i++) {
       const { x, y } = createVector(
         this.pos.x + this.degrVect.x + sin(this.degr + i) * 1000,
         this.pos.y + this.degrVect.y + cos(this.degr + i) * 1000

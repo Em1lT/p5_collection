@@ -4,13 +4,13 @@ let numOfWalls = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  player = new Player(width / 2, height / 2);
+  player = new Player(100, 100);
   for (let i = 0; i < numOfWalls; i++) {
     const wall = new Wall(
-      random(width),
-      random(width),
-      random(height),
-      random(height)
+      random(windowWidth),
+      random(windowHeight / 2),
+      random(windowWidth),
+      random(windowHeight / 2)
     );
     walls.push(wall);
   }
@@ -37,6 +37,8 @@ function keys() {
 function draw() {
   background(220);
   frameRate(30);
+
+  line(0, windowHeight / 2, windowWidth, windowHeight / 2);
   angleMode(DEGREES);
   keys();
   player.update(walls);
