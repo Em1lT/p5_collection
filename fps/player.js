@@ -43,10 +43,10 @@ class Player {
     );
 
     this.rays = [];
-    for (let i = 0; i <= this.fieldOfView * 2; i += this.radiusPoints) {
+    for (let i = -40; i <= this.fieldOfView * 2; i++) {
       const { x, y } = createVector(
-        this.pos.x + this.degrVect.x * i * 1000,
-        this.pos.y + this.degrVect.y * i * 1000
+        this.pos.x + this.degrVect.x + sin(this.degr + i) * 1000,
+        this.pos.y + this.degrVect.y + cos(this.degr + i) * 1000
       );
       const closest = this.closestWall(x, y, walls);
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
