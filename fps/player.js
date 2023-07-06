@@ -3,7 +3,7 @@ class Player {
     this.pos = createVector(x, y);
     this.rays = [];
     this.points = 10; // number of rays
-    this.fieldOfView = 90; // field of view
+    this.fieldOfView = 40; // field of view
     this.radiusPoints = 360 / this.points;
     this.degrVect = 0;
     this.degr = 0;
@@ -19,18 +19,34 @@ class Player {
   update(walls) {
     this.degrVect = createVector(sin(this.degr), cos(this.degr));
     // this.pos = createVector(mouseX, mouseY);
+    stroke("red");
     line(
       this.pos.x,
       this.pos.y,
       this.pos.x + this.degrVect.x * 30,
       this.pos.y + this.degrVect.y * 30
     );
+    stroke("black");
+
+    line(
+      this.pos.x,
+      this.pos.y,
+      this.pos.x + this.degrVect.x + sin(this.degr + this.fieldOfView) * 30,
+      this.pos.y + this.degrVect.y + cos(this.degr + this.fieldOfView) * 30
+    );
+
+    line(
+      this.pos.x,
+      this.pos.y,
+      this.pos.x + this.degrVect.x + sin(this.degr - this.fieldOfView) * 30,
+      this.pos.y + this.degrVect.y + cos(this.degr - this.fieldOfView) * 30
+    );
 
     this.rays = [];
-    for (let i = 0; i <= this.fieldOfView; i += this.radiusPoints) {
+    for (let i = 0; i <= this.fieldOfView * 2; i += this.radiusPoints) {
       const { x, y } = createVector(
-        this.pos.x + this.degrVect.x * 30 * i * 1000,
-        this.pos.y + this.degrVect.y * 30 * i * 1000
+        this.pos.x + this.degrVect.x * i * 1000,
+        this.pos.y + this.degrVect.y * i * 1000
       );
       const closest = this.closestWall(x, y, walls);
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
