@@ -4,8 +4,7 @@ let numOfWalls = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  // player = new Player(random(width), random(height));
-  player = new Ray(width / 2, height / 2);
+  player = new Player(width / 2, height / 2);
   for (let i = 0; i < numOfWalls; i++) {
     const wall = new Wall(
       random(width),
@@ -35,7 +34,8 @@ function keyPressed() {
   } else if (keyCode === RIGHT_ARROW) {
     player.updateAngle(-1);
   } else if (keyCode === UP_ARROW) {
-    player.move();
+    player.move(1);
   } else if (keyCode === DOWN_ARROW) {
+    player.move(1);
   }
 }

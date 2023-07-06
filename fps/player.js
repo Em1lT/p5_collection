@@ -1,10 +1,21 @@
-class Ray {
+class Player {
   constructor(x, y) {
     this.pos = createVector(x, y);
     this.rays = [];
     this.points = 180; // number of rays
     this.fieldOfView = 90; // field of view
     this.radiusPoints = 360 / this.points;
+    this.degrVect;
+    this.degr = 0;
+  }
+  updateAngle(value) {
+    console.log(this.degr);
+    this.degr += value;
+  }
+
+  move(value) {
+    let degrVect = createVector(sin(degr) * value, cos(degr) * value);
+    this.pos.add(degrVect);
   }
 
   update(walls) {
@@ -12,8 +23,8 @@ class Ray {
     this.rays = [];
     for (let i = 0; i <= this.fieldOfView; i += this.radiusPoints) {
       const { x, y } = createVector(
-        this.pos.x + sin(i) * 1000,
-        this.pos.y + cos(i) * 1000
+        this.pos.x + sin(this.degr * 5) * 1000,
+        this.pos.y + cos(this.degr * 5) * 1000
       );
       const closest = this.closestWall(x, y, walls);
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
