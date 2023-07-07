@@ -2,7 +2,7 @@ class Player {
   constructor(x, y) {
     this.pos = createVector(x, y);
     this.rays = [];
-    this.points = 10; // number of rays
+    this.points = 1; // number of rays
     this.fieldOfView = 60; // field of view
     this.radiusPoints = 360 / this.points;
     this.degrVect = 0;
@@ -31,9 +31,13 @@ class Player {
       );
       const closest = this.closestWall(x, y, walls);
 
-      if (closest && closest.) {
+      if (closest) {
         // if closes... render a wall in the bottom picture
-        // rect(closest.x, closest.y, closestDist);
+        ellipse(
+          closest.x,
+          closest.y,
+          map(closest.closestDist, 0, 1000, 0, 100)
+        );
       }
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
     }
@@ -65,7 +69,7 @@ class Player {
         closestDist = dis;
       }
     }
-    return { ...closest, ...closestDist };
+    return { ...closest, closestDist };
   }
 
   render() {
