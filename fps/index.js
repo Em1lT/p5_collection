@@ -17,6 +17,11 @@ function setup() {
 
   // splitting line
   walls.push(new Wall(0, windowHeight / 2, windowWidth, windowHeight / 2));
+
+  // outer walls
+  walls.push(new Wall(1, 1, 1, windowHeight / 2));
+  walls.push(new Wall(1, 1, windowWidth, 0));
+  walls.push(new Wall(windowWidth, 1, windowHeight / 2, 0));
 }
 
 function keys() {
