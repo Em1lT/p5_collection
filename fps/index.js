@@ -21,7 +21,7 @@ function setup() {
   // outer walls
   walls.push(new Wall(1, 1, 1, windowHeight / 2));
   walls.push(new Wall(1, 1, windowWidth, 0));
-  walls.push(new Wall(windowWidth, 1, windowHeight / 2, 0));
+  walls.push(new Wall(windowWidth, 0, windowWidth, windowHeight / 2));
 }
 
 function keys() {
