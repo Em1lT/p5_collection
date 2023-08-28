@@ -17,7 +17,7 @@ function setup() {
   );
 }
 function imageClassifyj() {
-  classifier.classify(capture, (err, res) => {
+  classifier.classify(capture, (_, res) => {
     label = res[0].label;
     confidence = res[0].confidence;
   });
