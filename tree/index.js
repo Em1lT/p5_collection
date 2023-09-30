@@ -20,14 +20,17 @@ function updateBranch() {}
 
 function mouseClicked() {
   console.log(lines.length);
-  let ass = [];
-  for (let branch of lines) {
-    const newBranch = {
-      a: createVector(branch.b.x, branch.b.y),
-      b: createVector(branch.b.x - 10, branch.b.y - 10),
-    };
+  let branches = [];
+  // for (let i = 0; i < lines.length; i++) {
+  //   if (lines.length === 1) {
+  //   }
+  //   if (i === 0 && lines.length !== 1) continue;
+  //   const newBranch = {
+  //     a: createVector(lines[i].a.x, lines[i].a.y),
+  //     b: createVector(lines[i].a.x - 50, lines[i].a.y - 50),
+  //   };
 
-    ass.push(newBranch);
-  }
-  lines.push(...ass);
+  //   branches.push(newBranch);
+  // }
+  lines.push(...branches);
 }
