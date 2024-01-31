@@ -15,10 +15,11 @@ function setupSquares() {
 }
 
 function update() {
-  for (let i = 0; i < gridSize; i++ ) {
-    for (let j = 0; j < gridSize; j++ ) {
-      if(grid[i][j].sand === true) {
-        if(grid[i][j + 1]) {
+  for (let i = gridSize - 1 ; i > 0; i--) {
+    for (let j = gridSize - 1 ; j > 0; j-- ) {
+      if(grid[i][j] && grid[i][j].sand === true) {
+        console.log("here")
+        if(grid[i][j + 1] && !grid[i][j + 1].sand ) {
           grid[i][j + 1].sand = true;
           grid[i][j].sand = false;
         } 
@@ -29,7 +30,7 @@ function update() {
 
 function setup() {
   createCanvas(400, 400);
-  frameRate(2);
+  frameRate(8);
   setupSquares();
 }
 
