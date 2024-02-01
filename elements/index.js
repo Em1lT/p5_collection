@@ -1,6 +1,6 @@
-let gridSize = 22
+let gridSize = 50
 let grid = []
-let size = 18
+let size = 8
 let selectedElement = 'sand'
 let boxSize = size - 1
 let lost = false
@@ -83,7 +83,7 @@ function update() {
 
 function setup() {
   createCanvas(400, 400);
-  frameRate(10);
+  frameRate(30);
   strokeWeight(0);
   setupSquares();
   let b1 = createButton('sand');
