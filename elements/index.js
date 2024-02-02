@@ -1,15 +1,16 @@
-let gridSize = 50
+let gridSize = 100
+let gridWidth = 7
 let grid = []
-let size = 8
 let selectedElement = 'sand'
-let boxSize = size - 1
 let lost = false
 
 function setupSquares() {
   for (let i = 0; i < gridSize; i++ ) {
     let tempGrid = []
     for (let j = 0; j < gridSize; j++ ) {
-      tempGrid.push({type: 'air', location: createVector(i * size,j * size, 1)})
+      const widthBox = width / gridSize * i 
+      const heightBox = height / gridSize * j 
+      tempGrid.push({type: 'air', location: createVector(widthBox, heightBox, 1)})
     }
     grid.push(tempGrid)
   }
@@ -82,24 +83,24 @@ function update() {
 }
 
 function setup() {
-  createCanvas(400, 400);
-  frameRate(30);
+  createCanvas(800, 800);
+  frameRate(10);
   strokeWeight(0);
   setupSquares();
   let b1 = createButton('sand');
-  b1.position(50, 500);
+  b1.position(50, 900);
   b1.mousePressed(() => {
     selectedElement = 'sand';
   });
 
   let b2 = createButton('water');
-  b2.position(200, 500);
+  b2.position(200, 900);
   b2.mousePressed(() => {
     selectedElement = 'water';
   });
 
   let b3 = createButton('stone');
-  b3.position(350, 500);
+  b3.position(350, 900);
   b3.mousePressed(() => {
     selectedElement = 'stone';
   });
@@ -123,10 +124,12 @@ function fillColor (cell) {
 }
 
 function drawSquares() {
-  for (let i = 0; i < gridSize; i++ ) {
-    for (let j = 0; j < gridSize; j++ ) {
-      fillColor(grid[i][j])
-      square(grid[i][j].location.x, grid[i][j].location.y, boxSize)
+  for (let i = 0; i < gridSize; i++) {
+    for (let j = 0; j < gridSize; j++) {
+    const widthBox = width / gridSize * i 
+    const heightBox = height / gridSize * j 
+    fillColor(grid[i][j])
+    square(widthBox,heightBox, gridWidth)
     }
   }
 }
@@ -140,8 +143,8 @@ function draw() {
 function mouseClicked({x,y}) {  
   for (let i = 0; i < gridSize; i++ ) {
     for (let j = 0; j < gridSize; j++ ) {
-      if(grid[i][j].location.x < x && grid[i][j].location.x + 30 > x) {
-        if(grid[i][j].location.y < y && grid[i][j].location.y + 30 > y) {
+      if(grid[i][j].location.x < x && grid[i][j].location.x + 100 > x) {
+        if(grid[i][j].location.y < y && grid[i][j].location.y + 100 > y) {
           if(grid[i][j].type === 'air') {
             grid[i][j].type = selectedElement;
           }
