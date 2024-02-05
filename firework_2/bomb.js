@@ -20,10 +20,10 @@ class Bomb {
   }
 
   explosionSetup() {
-    const base = new particle(this.pos.x, this.pos.y, 20, this.color);
+    const base = new Particle(this.pos.x, this.pos.y, 20, this.color);
     this.particles.push(base);
     for (let i = 0; i < this.size; i++) {
-      const part = new particle(
+      const part = new Particle(
         this.pos.x + sin(i),
         this.pos.y + cos(i),
         10,
@@ -31,6 +31,8 @@ class Bomb {
       );
       this.particles.push(part);
     }
+
+    this.particles.shift();
   }
 
   explosion() {
