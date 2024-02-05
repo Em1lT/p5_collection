@@ -2,6 +2,8 @@ let gridSize = 100
 let gridWidth = 7
 let grid = []
 let selectedElement = 'sand'
+let isMousePressed = false
+let canvasSize = 800 
 let lost = false
 
 function setupSquares() {
@@ -65,7 +67,7 @@ function update() {
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(canvasSize, canvasSize);
   frameRate(60);
   strokeWeight(0);
   setupSquares();
@@ -97,7 +99,7 @@ function setup() {
 function fillColor (cell) {
   switch (cell.type) {
     case 'sand':
-      fill('brown')
+      fill(color(194, 178, 200), 100)
       break; 
     case 'air':
       fill('white')
@@ -126,16 +128,29 @@ function draw() {
   background(220);
   drawSquares();
   update();
+  if(isMousePressed && mouseX < canvasSize && mouseY < canvasSize ) {
+    spawnElement({x: mouseX, y:mouseY});
+  }
 }
 
-function mouseClicked({x,y}) {  
+function mousePressed() { 
+  if( mouseX < canvasSize && mouseY < canvasSize ) {
+    isMousePressed = true
+  }
+}
+
+function mouseReleased() { 
+  isMousePressed = false
+}
+
+function spawnElement({x,y}) {  
   for (let i = 0; i < gridSize; i++ ) {
     for (let j = 0; j < gridSize; j++ ) {
       if(grid[i][j].location.x < x && grid[i][j].location.x + 50 > x) {
         if(grid[i][j].location.y < y && grid[i][j].location.y + 50 > y) {
           if(selectedElement === 'remove') {
             grid[i][j].type = 'air';
-          } else if(random(1) < 0.75 && grid[i][j].type === 'air') {
+          } else if(random(1) < 0.10 && grid[i][j].type === 'air') {
             grid[i][j].type = selectedElement;
           } 
         }
