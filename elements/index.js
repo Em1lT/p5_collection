@@ -43,31 +43,13 @@ function updateWater(i, j) {
       grid[i - 1][j + 1].type = 'water';
       grid[i][j].type = 'air';
     } else if (grid[i + 1] && grid[i + 1][j].type === 'air') {
-      if(dir === "right")  {
-        grid[i + 1][j].type = 'water';
-      }
+      grid[i + 1][j].type = 'water';
       grid[i][j].type = 'air';
-    } else if (!grid[i + 1] && grid[i + 1][j].type !== 'air') {
-      if(dir === "right")  {
-        grid[i + 1][j].type = 'water';
-      }
-      if(dir === "left")  {
-        grid[i - 1][j].type = 'water';
-      }
-        grid[i][j].type = 'air';
-    }
-
-  } else if (!grid[i][j + 1]) {
-    if(grid[i + 1]) {
-      if(grid[i + 1][j].type === 'air') {
-        grid[i+1][j].type = 'water';
-        grid[i][j].type = 'air';
-      } 
-    }
-  } else if (grid[i][j + 1].type === 'water') {
-        grid[i+1][j].type = 'water';
-        grid[i][j].type = 'air';
-    }
+    } else if (grid[i - 1] && grid[i - 1][j].type === 'air') {
+      grid[i - 1][j].type = 'water';
+      grid[i][j].type = 'air';
+    } 
+  }
 }
 
 function update() {
@@ -84,25 +66,31 @@ function update() {
 
 function setup() {
   createCanvas(800, 800);
-  frameRate(10);
+  frameRate(60);
   strokeWeight(0);
   setupSquares();
-  let b1 = createButton('sand');
+  let b1 = createButton('Sand');
   b1.position(50, 900);
   b1.mousePressed(() => {
     selectedElement = 'sand';
   });
 
-  let b2 = createButton('water');
+  let b2 = createButton('Water');
   b2.position(200, 900);
   b2.mousePressed(() => {
     selectedElement = 'water';
   });
 
-  let b3 = createButton('stone');
+  let b3 = createButton('Stone');
   b3.position(350, 900);
   b3.mousePressed(() => {
     selectedElement = 'stone';
+  });
+
+  let b4 = createButton('Remove');
+  b4.position(450, 900);
+  b4.mousePressed(() => {
+    selectedElement = 'remove';
   });
 }
 
@@ -126,10 +114,10 @@ function fillColor (cell) {
 function drawSquares() {
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
-    const widthBox = width / gridSize * i 
-    const heightBox = height / gridSize * j 
-    fillColor(grid[i][j])
-    square(widthBox,heightBox, gridWidth)
+      const widthBox = width / gridSize * i 
+      const heightBox = height / gridSize * j 
+      fillColor(grid[i][j])
+      square(widthBox,heightBox, gridWidth)
     }
   }
 }
@@ -143,11 +131,13 @@ function draw() {
 function mouseClicked({x,y}) {  
   for (let i = 0; i < gridSize; i++ ) {
     for (let j = 0; j < gridSize; j++ ) {
-      if(grid[i][j].location.x < x && grid[i][j].location.x + 100 > x) {
-        if(grid[i][j].location.y < y && grid[i][j].location.y + 100 > y) {
-          if(grid[i][j].type === 'air') {
+      if(grid[i][j].location.x < x && grid[i][j].location.x + 50 > x) {
+        if(grid[i][j].location.y < y && grid[i][j].location.y + 50 > y) {
+          if(selectedElement === 'remove') {
+            grid[i][j].type = 'air';
+          } else if(random(1) < 0.75 && grid[i][j].type === 'air') {
             grid[i][j].type = selectedElement;
-          }
+          } 
         }
       }
     }
