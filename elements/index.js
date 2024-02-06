@@ -99,7 +99,7 @@ function setup() {
 function fillColor (cell) {
   switch (cell.type) {
     case 'sand':
-      fill(color(194, 178, 200), 100)
+      fill(color(194, map(cell.location.y, 0, canvasSize, 0, 255), 170), 100)
       break; 
     case 'air':
       fill('white')
