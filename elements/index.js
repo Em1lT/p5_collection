@@ -70,6 +70,7 @@ function setup() {
   createCanvas(canvasSize, canvasSize);
   frameRate(60);
   strokeWeight(0);
+  colorMode(HSL, 255);
   setupSquares();
   let b1 = createButton('Sand');
   b1.position(50, 900);
@@ -99,7 +100,7 @@ function setup() {
 function fillColor (cell) {
   switch (cell.type) {
     case 'sand':
-      fill(color(194, map(cell.location.y, 0, canvasSize, 0, 255), 170), 100)
+      fill(color(56, map(cell.location.y, 0, canvasSize, 100, 25), 59), 100)
       break; 
     case 'air':
       fill('white')
