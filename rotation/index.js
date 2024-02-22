@@ -13,6 +13,5 @@ function draw() {
   rotate(angle);
   rectMode(CENTER);
   rect(0, 0, 100, 50);
-
   angle = angle + 1;
 }
