@@ -5,7 +5,7 @@ let seconds = 0
 function setup() {
 	createCanvas(800, 800);  
   setInterval(timer, 1000);
-  for(let i = 1; i <= 1000; i++) {
+  for(let i = 1; i <= 100; i++) {
     dots.push({x: random(0, width - 10), y: random(0, height - 10), index: i, pathIndex: undefined});
   }
     dots.push({x: 0, y: 0, index: 0, pathIndex: 0});
@@ -47,16 +47,41 @@ function drawLine() {
   }
 }
 
+// This will only go to the closest dot
+// function forward(item) {
+//   // change this logic to return the smartest one 
+//   if(!item) return
+//   let closest;
+//   dots.forEach((dot) => {
+//     const d = dist(item.x, item.y, dot.x, dot.y)
+//     if(d != 0 && d ) {
+//       if(!closest) {
+//         closest = dot
+//       } else if (dot.pathIndex === undefined && closest && d < dist(item.x, item.y, closest.x, closest.y)) {
+//         closest = dot
+//       }
+//     }
+//   })
+//   return closest
+// }
+
 function forward(item) {
   // change this logic to return the smartest one 
   if(!item) return
   let closest;
   dots.forEach((dot) => {
     const d = dist(item.x, item.y, dot.x, dot.y)
-    if(d != 0 && d ) {
+    const d1 = dist(dot.x, dot.y, width, height)
+    if(d != 0 && d && d1 && d1 != 0 ) {
       if(!closest) {
         closest = dot
-      } else if (dot.pathIndex === undefined && closest && d < dist(item.x, item.y, closest.x, closest.y)) {
+      } else if (
+        dot.pathIndex === undefined &&
+        closest &&
+        d < dist(item.x, item.y, closest.x, closest.y) &&
+        d1 < dist(item.x, item.y, width, height)
+      ) {
+        console.log(dot)
         closest = dot
       }
     }
@@ -66,7 +91,7 @@ function forward(item) {
 
 function draw() {
 	background(220);
-  frameRate(10);
+  frameRate(5);
   fill('black')
   text(seconds, 10, height - 10)
   const x = dots.filter(item => item.pathIndex >= 0).sort((a,b) => {
