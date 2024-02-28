@@ -2,17 +2,18 @@ let humans = [];
 
 function setup() {
     createCanvas(windowWidth / 2, windowHeight / 2);
-    createSurvivors(20)
+    createSurvivors(2)
     createInfected()
 }
 
 function draw() {
   background(220);
+  frameRate(1)
   updateScreen()
 }
 
 function reset() {
-    createSurvivors(10)
+    createSurvivors(2)
     createInfected()
 }
 
