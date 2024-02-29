@@ -1,15 +1,20 @@
 let dots = [];
 let stop = false
 let seconds = 0
+let numberOfdots = 1000
+let goalCoordinates = {}
 
 function setup() {
 	createCanvas(800, 800);  
   setInterval(timer, 1000);
-  for(let i = 1; i <= 100; i++) {
+  for(let i = 1; i <= numberOfdots; i++) {
     dots.push({x: random(0, width - 10), y: random(0, height - 10), index: i, pathIndex: undefined});
   }
-    dots.push({x: 0, y: 0, index: 0, pathIndex: 0});
-    dots.push({x: width, y: height, index: dots.length + 1, goal: true, pathIndex: undefined});
+  dots.push({x: 0, y: 0, index: 0, pathIndex: 0});
+  const goal = {x: random(width), y: random(width), index: dots.length + 1, goal: true, pathIndex: undefined}
+  dots.push(goal);
+  goalCoordinates = {x: goal.x, y: goal.y}
+
 }
 
 function timer() {
@@ -26,7 +31,7 @@ function dotColor(globalIndex) {
     } else if(item.pathIndex >= 0 ) {
       fill('red')
     } else if (item.goal === true) {
-      fill('yellow')
+      fill('green')
     } else {
       fill('white')
     }
@@ -71,17 +76,16 @@ function forward(item) {
   let closest;
   dots.forEach((dot) => {
     const d = dist(item.x, item.y, dot.x, dot.y)
-    const d1 = dist(dot.x, dot.y, width, height)
-    if(d != 0 && d && d1 && d1 != 0 ) {
+    const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
+    if(d != 0 && d) {
       if(!closest) {
         closest = dot
-      } else if (
+      }  else if (
         dot.pathIndex === undefined &&
         closest &&
         d < dist(item.x, item.y, closest.x, closest.y) &&
-        d1 < dist(item.x, item.y, width, height)
+        d1 < dist(item.x, item.y, goalCoordinates.x, goalCoordinates.y)
       ) {
-        console.log(dot)
         closest = dot
       }
     }
@@ -91,7 +95,7 @@ function forward(item) {
 
 function draw() {
 	background(220);
-  frameRate(5);
+  frameRate(10);
   fill('black')
   text(seconds, 10, height - 10)
   const x = dots.filter(item => item.pathIndex >= 0).sort((a,b) => {
