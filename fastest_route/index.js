@@ -1,7 +1,7 @@
 let dots = [];
 let stop = false
 let seconds = 0
-let numberOfdots = 1000
+let numberOfdots = 100
 let goalCoordinates = {}
 
 function setup() {
@@ -71,13 +71,62 @@ function drawLine() {
 //   return closest
 // }
 
+// function forward(item) {
+//   // Also includes the dots distance from the goal. Much faster algorithm but all dots 
+//   if(!item) return
+//   let closest;
+//   dots.forEach((dot) => {
+//     const d = dist(item.x, item.y, dot.x, dot.y)
+//     strokeWeight(0.1)
+//     line(item.x, item.y, dot.x, dot.y)
+//     strokeWeight(1)
+//     const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
+//     if(d != 0 && d) {
+//       if(!closest) {
+//         closest = dot
+//       }  else if (
+//         dot.pathIndex === undefined &&
+//         closest &&
+//         d < dist(item.x, item.y, closest.x, closest.y) &&
+//         d1 < dist(item.x, item.y, goalCoordinates.x, goalCoordinates.y)
+//       ) {
+//         closest = dot
+//       }
+//     }
+//   })
+//   return closest
+// }
+
+function getClosestPoints (item) {
+  const closestDots = dots.filter((dot) => {
+    const d = dist(item.x, item.y, dot.x, dot.y)
+    return d < 100 && dot.pathIndex === undefined
+  })
+
+  if(closestDots.length > 0) {
+    return closestDots
+  }
+  return dots.filter((dot) => {
+    const d = dist(item.x, item.y, dot.x, dot.y)
+    return d < 200 && dot.pathIndex === undefined
+  })
+}
+
+function getClosestPoints1(item) {
+  const s = dots.copyWithin(0, dots.length);
+
+  return s.sort((a,b) => {
+    return dist(item.x, item.y, a.x, a.y) - dist(item.x, item.y, b.x, b.y)
+  }).filter(dot => dot.pathIndex === undefined).slice(0,3)
+}
+
 function forward(item) {
-  // Also includes the dots distance from the goal. Much faster algorithm but all dots 
   if(!item) return
   let closest;
-  dots.forEach((dot) => {
+  const closestDots = getClosestPoints1(item)
+  closestDots.forEach((dot) => {
     const d = dist(item.x, item.y, dot.x, dot.y)
-    strokeWeight(0.1)
+    strokeWeight(0.2)
     line(item.x, item.y, dot.x, dot.y)
     strokeWeight(1)
     const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
