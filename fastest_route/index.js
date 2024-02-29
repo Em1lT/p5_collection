@@ -10,8 +10,9 @@ function setup() {
   for(let i = 1; i <= numberOfdots; i++) {
     dots.push({x: random(0, width - 10), y: random(0, height - 10), index: i, pathIndex: undefined});
   }
-  dots.push({x: 0, y: 0, index: 0, pathIndex: 0});
+  const start  = {x: random(width), y: random(width), index: dots.length + 1, pathIndex: 0}
   const goal = {x: random(width), y: random(width), index: dots.length + 1, goal: true, pathIndex: undefined}
+  dots.push(start);
   dots.push(goal);
   goalCoordinates = {x: goal.x, y: goal.y}
 
@@ -71,11 +72,14 @@ function drawLine() {
 // }
 
 function forward(item) {
-  // change this logic to return the smartest one 
+  // Also includes the dots distance from the goal. Much faster algorithm but all dots 
   if(!item) return
   let closest;
   dots.forEach((dot) => {
     const d = dist(item.x, item.y, dot.x, dot.y)
+    strokeWeight(0.1)
+    line(item.x, item.y, dot.x, dot.y)
+    strokeWeight(1)
     const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
     if(d != 0 && d) {
       if(!closest) {
