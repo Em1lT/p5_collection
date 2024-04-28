@@ -22,6 +22,9 @@ function updateSand(i, j) {
   if(grid[i][j + 1] && grid[i][j + 1].type === 'air' ) {
     grid[i][j + 1].type = 'sand';
     grid[i][j].type = 'air';
+  } else if (grid[i][j + 1] && grid[i][j + 1].type === 'water' ) {
+    grid[i][j + 1].type = 'sand';
+    grid[i][j].type = 'water';
   } else if (grid[i][j + 1] && grid[i][j + 1].type !== 'air' ) {
     if(grid[i + 1] && grid[i + 1][j + 1].type === 'air') {
       grid[i + 1][j + 1].type = 'sand';
