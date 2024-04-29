@@ -41,19 +41,26 @@ function updateWater(i, j) {
     grid[i][j + 1].type = 'water';
     grid[i][j].type = 'air';
   } else if (grid[i][j + 1] && grid[i][j + 1].type !== 'air' ) {
-    if(grid[i + 1] && grid[i + 1][j + 1].type === 'air') {
-      grid[i + 1][j + 1].type = 'water';
-      grid[i][j].type = 'air';
-    } else if (grid[i - 1] && grid[i - 1][j + 1].type === 'air') {
-      grid[i - 1][j + 1].type = 'water';
-      grid[i][j].type = 'air';
-    } else if (grid[i + 1] && grid[i + 1][j].type === 'air') {
-      grid[i + 1][j].type = 'water';
-      grid[i][j].type = 'air';
-    } else if (grid[i - 1] && grid[i - 1][j].type === 'air') {
-      grid[i - 1][j].type = 'water';
-      grid[i][j].type = 'air';
-    } 
+    const maxDistance = grid.length;
+    for (let distance = 1; distance <= maxDistance; distance++) {
+      if(grid[i + distance] && grid[i + distance][j + 1].type === 'sand') {
+        break;
+      } else if(grid[i + distance] && grid[i + distance][j + 1].type === 'air') {
+        grid[i + distance][j + 1].type = 'water';
+        grid[i][j].type = 'air';
+        break;
+      }
+    }
+
+    for (let distance = 1; distance <= maxDistance; distance++) {
+      if(grid[i - distance] && grid[i - distance][j + 1].type === 'sand') {
+        break;
+      } else if (grid[i - distance] && grid[i - distance][j + 1].type === 'air') {
+        grid[i - distance][j + 1].type = 'water';
+        grid[i][j].type = 'air';
+        break;
+      } 
+    }
   }
 }
 
@@ -71,7 +78,7 @@ function update() {
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
-  frameRate(60);
+  frameRate(30);
   strokeWeight(0);
   colorMode(HSL, 255);
   setupSquares();
