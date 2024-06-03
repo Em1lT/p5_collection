@@ -4,7 +4,9 @@ class Dot {
     this.location = location;
     this.index = index
     this.pathIndex = pathIndex;
-    this.speed = createVector(0,0)
+    this.speed = createVector(1,1)
+    this.degr = createVector(0,0)
+    this.degrVect = 0;
     this.vel = p5.Vector.random2D();
   }
 
@@ -27,46 +29,26 @@ class Dot {
     return closest;
   }
 
-  pushAwayFromOthers(closest) {
-    if(!closest) {
-      return
-    }
-    this.vel = p5.Vector.add(closest.location, this.location);
-    this.vel.limit(0.1)
-    this.speed.add(this.vel)
-    this.speed.limit(1)
-    this.location.add(this.speed);
-		this.vel = createVector(0, 0);
-  }
-
-  steerToCenter() {
-    const s = createVector(width /2, height /2 )
-    this.vel = p5.Vector.sub(s, this.location);
-    this.vel.limit(0.1)
-    this.speed.add(this.vel)
-    this.speed.limit(1)
-    this.location.add(this.speed);
-		this.vel = createVector(0, 0);
-  }
-
   update (vector) {
-    if(vector) {
-      // this.vel = p5.Vector.sub(vector.location, this.location);
-    }
-    const heading = p5.Vector.fromAngle(this.location.heading)
-    this.vel.add(heading)
-    this.drawArrow(this.location, this.location, 'green')
-    rotate(heading)
+    //if(vector) {
+    //  // this.vel = p5.Vector.sub(vector.location, this.location);
+    //}
+    const s = createVector(width/2, height/2 )
+    this.vel = p5.Vector.sub(s, this.location);
+    this.vel.add(this.vel)
+    // console.log(this.location.heading())
+    this.vel.limit(0.1)
     this.speed.add(this.vel)
-    this.speed.limit(3)
-    const hea = createVector(this.location.x, this.location.y)
-    line(this.location.x, this.location.y, hea.x, hea.y)
+    this.speed.limit(6)
+    // const hea = createVector(this.location.x, this.location.y)
+    // line(this.location.x, this.location.y, hea.x, hea.y)
+    
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
   }
 
   render () {
-    triangle(this.location.x + 10, this.location.y, this.location.x, this.location.y + 10, this.location.x + 30, this.location.y + 30);
+    ellipse(this.location.x, this.location.y, 10);
 
   }
 

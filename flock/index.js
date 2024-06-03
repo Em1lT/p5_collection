@@ -23,7 +23,7 @@ function udpateDots () {
 
 function draw() {
 	background(220);
-  // angleMode(DEGREES);
+  angleMode(DEGREES);
   // frameRate(5);
   udpateDots()
 }
