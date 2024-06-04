@@ -24,7 +24,7 @@ class Ball {
 
   render() {
     ellipse(this.pos.x, this.pos.y, this.r * 2);
-    let velLine = p5.Vector.add(this.pos, this.vel);
+    let velLine = p5.Vector.add(this.pos, this.vel)
     line(this.pos.x, this.pos.y, velLine.x, velLine.y);
   }
 

@@ -2,8 +2,8 @@ class Player {
   constructor(x, y) {
     this.pos = createVector(x, y);
     this.rays = [];
-    this.points = 20; // number of rays
-    this.fieldOfView = 60; // field of view
+    this.points = 2; // number of rays
+    this.fieldOfView = 90; // field of view
     this.radiusPoints = 360 / this.points;
     this.degrVect = 0;
     this.degr = 0;
@@ -34,19 +34,22 @@ class Player {
       if (closest) {
         // if closes... render a wall in the bottom picture
         this.drawWall(closest, i);
-        ellipse(
-          closest.x,
-          closest.y,
-          map(closest.closestDist, 0, 1000, 0, 100)
-        );
+        // ellipse(
+        //   closest.x,
+        //   closest.y,
+        //   map(closest.closestDist, 0, 1000, 0, 100)
+        // );
       }
       this.rays.push(createVector(closest?.x || x, closest?.y || y));
     }
   }
 
   drawWall(closest, i) {
-    const s = map(closest.closestDist, 0, 1000, 0, 100);
-    rect(10 * i, 600, s, s);
+    const s = map(closest.closestDist, 0, 1000, 100, 0);
+    const onMap = map()
+    fill(255, 255, 2 * s)
+    rect(10, 500, 40, height/2);
+    fill(255)
   }
 
   closestWall(x, y, walls) {

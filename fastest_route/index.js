@@ -71,31 +71,31 @@ function drawLine() {
 //   return closest
 // }
 
-// function forward(item) {
-//   // Also includes the dots distance from the goal. Much faster algorithm but all dots 
-//   if(!item) return
-//   let closest;
-//   dots.forEach((dot) => {
-//     const d = dist(item.x, item.y, dot.x, dot.y)
-//     strokeWeight(0.1)
-//     line(item.x, item.y, dot.x, dot.y)
-//     strokeWeight(1)
-//     const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
-//     if(d != 0 && d) {
-//       if(!closest) {
-//         closest = dot
-//       }  else if (
-//         dot.pathIndex === undefined &&
-//         closest &&
-//         d < dist(item.x, item.y, closest.x, closest.y) &&
-//         d1 < dist(item.x, item.y, goalCoordinates.x, goalCoordinates.y)
-//       ) {
-//         closest = dot
-//       }
-//     }
-//   })
-//   return closest
-// }
+function forward1(item) {
+  // Also includes the dots distance from the goal. Much faster algorithm but all dots 
+  if(!item) return
+  let closest;
+  dots.forEach((dot) => {
+    const d = dist(item.x, item.y, dot.x, dot.y)
+    strokeWeight(0.1)
+    line(item.x, item.y, dot.x, dot.y)
+    strokeWeight(1)
+    const d1 = dist(dot.x, dot.y, goalCoordinates.x, goalCoordinates.y)
+    if(d != 0 && d) {
+      if(!closest) {
+        closest = dot
+      }  else if (
+        dot.pathIndex === undefined &&
+        closest &&
+        d < dist(item.x, item.y, closest.x, closest.y) &&
+        d1 < dist(item.x, item.y, goalCoordinates.x, goalCoordinates.y)
+      ) {
+        closest = dot
+      }
+    }
+  })
+  return closest
+}
 
 function getClosestPoints (item) {
   const closestDots = dots.filter((dot) => {
@@ -114,10 +114,9 @@ function getClosestPoints (item) {
 
 function getClosestPoints1(item) {
   const s = dots.copyWithin(0, dots.length);
-
   return s.sort((a,b) => {
     return dist(item.x, item.y, a.x, a.y) - dist(item.x, item.y, b.x, b.y)
-  }).filter(dot => dot.pathIndex === undefined).slice(0,3)
+  }).filter(dot => dot.pathIndex === undefined).slice(0,20)
 }
 
 function forward(item) {
@@ -146,11 +145,7 @@ function forward(item) {
   return closest
 }
 
-function draw() {
-	background(220);
-  frameRate(10);
-  fill('black')
-  text(seconds, 10, height - 10)
+function render () {
   const x = dots.filter(item => item.pathIndex >= 0).sort((a,b) => {
     return b.pathIndex - a.pathIndex
   })[0]
@@ -158,6 +153,14 @@ function draw() {
   const globalIndex = x.pathIndex
   dotColor(globalIndex);
   drawLine()
+}
+
+function update () {
+  const x = dots.filter(item => item.pathIndex >= 0).sort((a,b) => {
+    return b.pathIndex - a.pathIndex
+  })[0]
+
+  const globalIndex = x.pathIndex
 
   if(!stop) {
     for(let i = 0; i < dots.length; i++) {
@@ -173,6 +176,18 @@ function draw() {
       } 
     }
   }
+}
+
+function draw() {
+	background(220);
+  frameRate(10);
+  fill('black')
+  text(seconds, 10, height - 10)
+  render()
+}
+
+function mouseClicked() {
+  update()
 }
 
 
