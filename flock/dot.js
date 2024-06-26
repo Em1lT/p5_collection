@@ -37,6 +37,7 @@ class Dot {
     this.vel = p5.Vector.sub(s, this.location);
     this.vel.add(this.vel)
     // console.log(this.location.heading())
+
     this.vel.limit(0.1)
     this.speed.add(this.vel)
     this.speed.limit(6)
