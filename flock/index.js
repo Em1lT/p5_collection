@@ -1,5 +1,6 @@
 numOfDots = 1
 dots = [];
+walls = [];
 
 function setup() {
 	createCanvas(500, 500);  
@@ -7,11 +8,16 @@ function setup() {
     const location = createVector(random(0, width - 10), random(0, height - 10))
     dots.push(new Dot(location, i, undefined))
   }
+
+  //  draw walls
+  walls.push(new Wall(0, 0, width, 0))
+  walls.push(new Wall(0, 0, 0, height))
+  walls.push(new Wall(width, 0, width, height))
+  walls.push(new Wall(0, height, width, height))
 }
 
 function udpateDots () {
   dots.forEach((dot) => {
-    const v = p5.Vector.random2D();
     const dotsArrCopy = [...dots]
     const closest = dot.getClosest(dotsArrCopy);
     dot.update(closest)
@@ -26,5 +32,11 @@ function draw() {
   angleMode(DEGREES);
   // frameRate(5);
   udpateDots()
+  // draw walls
+  strokeWeight(4)
+  walls.forEach(wall => {
+    wall.render()
+  })
+  strokeWeight(1)
 }
 

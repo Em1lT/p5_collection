@@ -4,10 +4,11 @@ class Dot {
     this.location = location;
     this.index = index
     this.pathIndex = pathIndex;
-    this.speed = createVector(1,1)
+    this.speed = createVector(0,0)
     this.degr = createVector(0,0)
     this.degrVect = 0;
-    this.vel = p5.Vector.random2D();
+    this.vel = createVector(0,0)
+
   }
 
   getClosest(dots) {
@@ -29,13 +30,16 @@ class Dot {
     return closest;
   }
 
+  closestWall() {
+  }
+
   update (vector) {
     //if(vector) {
     //  // this.vel = p5.Vector.sub(vector.location, this.location);
     //}
-    const s = createVector(width/2, height/2 )
-    this.vel = p5.Vector.sub(s, this.location);
+    // this.vel = p5.Vector.sub(s, this.location);
     this.vel.add(this.vel)
+    this.closestWall();
     // console.log(this.location.heading())
 
     this.vel.limit(0.1)
