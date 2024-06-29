@@ -30,7 +30,7 @@ function udpateDots () {
 function draw() {
 	background(220);
   angleMode(DEGREES);
-  // frameRate(5);
+  // frameRate(1);
   udpateDots()
   // draw walls
   strokeWeight(4)

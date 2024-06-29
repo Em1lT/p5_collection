@@ -8,6 +8,13 @@ class Dot {
     this.degr = createVector(0,0)
     this.degrVect = 0;
     this.vel = createVector(0,0)
+    this.guideLineLen = 200
+    this.guideLines = [
+      createVector(this.location.x + this.guideLineLen, this.location.y),
+      createVector(this.location.x, this.location.y + this.guideLineLen),
+      createVector(this.location.x - this.guideLineLen, this.location.y),
+      createVector(this.location.x, this.location.y - this.guideLineLen),
+    ]
   }
 
   getClosest(dots) {
@@ -29,13 +36,13 @@ class Dot {
     return closest;
   }
 
-  closestWall(x, y, walls) {
+  closestWall(x ,y ,walls) {
     let closest;
     let closestDist;
     for (let wall of walls) {
       const ray = this.intersect(
-        this.pos.x,
-        this.pos.y,
+        this.location.x,
+        this.location.y,
         x,
         y,
         wall.pos.x,
@@ -44,7 +51,7 @@ class Dot {
         wall.pos2.y
       );
       if (!ray) continue;
-      const dis = dist(ray.x, ray.y, this.pos.x, this.pos.y);
+      const dis = dist(ray.x, ray.y, this.location.x, this.location.y);
 
       if (dis === 0) {
         continue;
@@ -58,6 +65,14 @@ class Dot {
     return closest;
   }
 
+  updateGuideLines () {
+    this.guideLines = [
+      createVector(this.location.x + this.guideLineLen, this.location.y),
+      createVector(this.location.x, this.location.y + this.guideLineLen),
+      createVector(this.location.x - this.guideLineLen, this.location.y),
+      createVector(this.location.x, this.location.y - this.guideLineLen),
+    ]
+  }
 
   update (vector, walls) {
     //if(vector) {
@@ -65,9 +80,15 @@ class Dot {
     //}
     // this.vel = p5.Vector.sub(s, this.location);
     this.vel.add(this.vel)
-    this.closestWall(walls);
-    // console.log(this.location.heading())
 
+    const s = this.guideLines.map(guideLine => {
+      return this.closestWall(guideLine.x, guideLine.y, walls);
+    }).filter(item => item)
+    // Push away from other dots
+
+    s.forEach(item => {
+      this.vel.add(p5.Vector.sub(createVector(item.x, item.y), this.location))
+    })
     this.vel.limit(0.1)
     this.speed.add(this.vel)
     this.speed.limit(6)
@@ -76,11 +97,14 @@ class Dot {
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
+    this.updateGuideLines()
   }
 
   render () {
-    ellipse(this.location.x, this.location.y, 10);
-
+    ellipse(this.location.x, this.location.y, 15);
+    this.guideLines.forEach(guideLine => {
+      line(this.location.x, this.location.y, guideLine.x, guideLine.y)
+    })
   }
 
   // line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
