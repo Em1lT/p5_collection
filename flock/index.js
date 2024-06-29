@@ -20,7 +20,7 @@ function udpateDots () {
   dots.forEach((dot) => {
     const dotsArrCopy = [...dots]
     const closest = dot.getClosest(dotsArrCopy);
-    dot.update(closest)
+    dot.update(closest, walls)
     // dot.steerToCenter()
     // dot.pushAwayFromOthers(closest)
     dot.render()
