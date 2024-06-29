@@ -1,9 +1,9 @@
-numOfDots = 1
+numOfDots = 200
 dots = [];
 walls = [];
 
 function setup() {
-	createCanvas(500, 500);  
+	createCanvas(800, 800);  
   for(let i = 1; i <= numOfDots; i++) {
     const location = createVector(random(0, width - 10), random(0, height - 10))
     dots.push(new Dot(location, i, undefined))
@@ -21,8 +21,7 @@ function udpateDots () {
     const dotsArrCopy = [...dots]
     const closest = dot.getClosest(dotsArrCopy);
     dot.update(closest, walls)
-    // dot.steerToCenter()
-    // dot.pushAwayFromOthers(closest)
+    dot.outOfBounds() && dots.splice(dots.indexOf(dot), 1)
     dot.render()
   })
 }

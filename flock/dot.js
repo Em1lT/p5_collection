@@ -4,11 +4,11 @@ class Dot {
     this.location = location;
     this.index = index
     this.pathIndex = pathIndex;
-    this.speed = createVector(0,0)
+    this.speed = p5.Vector.random2D()
     this.degr = createVector(0,0)
     this.degrVect = 0;
     this.vel = createVector(0,0)
-    this.guideLineLen = 200
+    this.guideLineLen = 150
     this.guideLines = [
       createVector(this.location.x + this.guideLineLen, this.location.y),
       createVector(this.location.x, this.location.y + this.guideLineLen),
@@ -74,12 +74,17 @@ class Dot {
     ]
   }
 
+  outOfBounds () {
+    return this.location.x < 0 || this.location.x > width || this.location.y < 0 || this.location.y > height
+  }
+
   update (vector, walls) {
     //if(vector) {
     //  // this.vel = p5.Vector.sub(vector.location, this.location);
     //}
     // this.vel = p5.Vector.sub(s, this.location);
     this.vel.add(this.vel)
+    line(this.location.x, this.location.y, vector.location.x, vector.location.y)
 
     const s = this.guideLines.map(guideLine => {
       return this.closestWall(guideLine.x, guideLine.y, walls);
@@ -87,8 +92,13 @@ class Dot {
     // Push away from other dots
 
     s.forEach(item => {
-      this.vel.add(p5.Vector.sub(createVector(item.x, item.y), this.location))
+      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location))
     })
+
+    // TODO: this is not working. push awayt form the vector
+    // this.vel.sub(vector.location)
+    // this.vel.sub(p5.Vector.sub(this.location, vector.location))
+
     this.vel.limit(0.1)
     this.speed.add(this.vel)
     this.speed.limit(6)
@@ -101,9 +111,9 @@ class Dot {
   }
 
   render () {
-    ellipse(this.location.x, this.location.y, 15);
+    ellipse(this.location.x, this.location.y, 10);
     this.guideLines.forEach(guideLine => {
-      line(this.location.x, this.location.y, guideLine.x, guideLine.y)
+      // line(this.location.x, this.location.y, guideLine.x, guideLine.y)
     })
   }
 
