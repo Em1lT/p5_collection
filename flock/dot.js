@@ -8,7 +8,7 @@ class Dot {
     this.degr = createVector(0,0)
     this.degrVect = 0;
     this.vel = createVector(0,0)
-    this.guideLineLen = 150
+    this.guideLineLen = 80
     this.guideLines = [
       createVector(this.location.x + this.guideLineLen, this.location.y),
       createVector(this.location.x, this.location.y + this.guideLineLen),
@@ -87,13 +87,24 @@ class Dot {
       // adjust to the direction of the wall
       const d = dist(this.location.x, this.location.y, item.x, item.y)
       // push away from the wall
-      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location))
+      const g = map(d, 0, 100, 0.1, 1)
+      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location)).limit(g)
 
     })
   }
 
+   steerTowardsTheGroup(vector) {
+     // copy vector heading
+     const heading = p5.Vector.sub(vector.location, this.location)
+     heading.normalize()
+     this.vel.add(heading)
+  }
+
   steerAwayFromClosestVector (vector) {
-    this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(0.1)
+    if(!vector) return
+    const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
+    const g = map(d, 0, 100, 0.1, 0.5)
+    this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
   }
 
   markClosestVector (vector) {
@@ -109,12 +120,12 @@ class Dot {
     this.vel.add(this.vel)
 
     // this.markClosestVector(closestVector)
+    this.steerTowardsTheGroup(closestVector)
     this.steerAwayFromClosestVector(closestVector)
     this.steerAwayFromClosestWall(walls)
 
-    this.vel.limit(0.1)
     this.speed.add(this.vel)
-    this.speed.limit(6)
+    this.speed.limit(4)
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
@@ -122,10 +133,10 @@ class Dot {
   }
 
   render () {
-    // ellipse(this.location.x, this.location.y, 10);
+    ellipse(this.location.x, this.location.y, 10);
     // const center = createVector(width / 2, height / 2);
-    // this.markLineOfSight()
-    this.arrowHead(this.speed, this.location)
+    this.markLineOfSight()
+    // this.arrowHead(this.vel, this.location)
     // this.guideLines.forEach(guideLine => {
     //   line(this.location.x, this.location.y, guideLine.x, guideLine.y)
     // })
@@ -162,12 +173,17 @@ class Dot {
   }
 
   arrowHead(start, vector) {
-    const offset = 10
-    push() //start new drawing state
-    var angle = atan2(start.y - vector.y, start.x - vector.x); //calculates the angle of the line
-    translate(vector.x, vector.y); //moves the origin to the center of the line
-    rotate(angle-HALF_PI); //rotates the arrow point
-    triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
-    pop();
+  push();
+
+  var norm = createVector(vector.x, vector.y);
+  norm.normalize();
+
+  applyMatrix(
+    norm.x, norm.y,
+    -norm.y, norm.x,
+    vector.x - start.x,
+    vector.y - start.y);
+  triangle(0, 6, 12, 0, 0, -6);
+  pop();
   }
 }
