@@ -83,9 +83,10 @@ class Dot {
       return this.closestWall(guideLine.x, guideLine.y, walls);
     }).filter(item => item)
     // Push away from other dots
-
     s.forEach(item => {
-      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location))
+      // not so powerful
+      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location)).normalize()
+
     })
   }
 
@@ -99,7 +100,7 @@ class Dot {
   
   markLineOfSight () {
     // mark staright line in fornt
-    line(this.location.x, this.location.y, this.location.x + this.speed.x * 20, this.location.y + this.speed.y * 20)
+    line(this.location.x, this.location.y, this.location.x + this.speed.x * 10, this.location.y + this.speed.y * 10)
   }
 
   update (closestVector, walls) {
@@ -107,12 +108,11 @@ class Dot {
 
     // this.markClosestVector(closestVector)
     this.steerAwayFromClosestWall(walls)
-    this.markLineOfSight()
     // this.steerAwayFromClosestVector(closestVector)
 
-    this.vel.normalize()
+    this.vel.setMag(2)
     this.speed.add(this.vel)
-    this.speed.normalize()
+    this.speed.setMag(2)
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
@@ -121,8 +121,9 @@ class Dot {
 
   render () {
     // ellipse(this.location.x, this.location.y, 10);
-    const center = createVector(width / 2, height / 2);
-    // this.arrowHead(center, this.location)
+    // const center = createVector(width / 2, height / 2);
+    this.markLineOfSight()
+    this.arrowHead(this.location, this.speed)
     // this.guideLines.forEach(guideLine => {
     //   line(this.location.x, this.location.y, guideLine.x, guideLine.y)
     // })
@@ -158,14 +159,13 @@ class Dot {
     return { x, y };
   }
 
-  arrowHead(start) {
-    const offset = 10;
+  arrowHead(start, vector) {
+    const offset = 10
     push() //start new drawing state
-    var angle = atan2(this.location.y - start.y, this.location.x - start.x); //calculates the angle of the line
-    translate(this.location.x, this.location.y); //moves the origin to the center of the line
-    rotate(angle-HALF_PI);
+    var angle = atan2(start.y - vector.y, start.x - vector.x); //calculates the angle of the line
+    translate(vector.x, vector.y); //moves the origin to the center of the line
+    rotate(angle-HALF_PI); //rotates the arrow point
     triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
     pop();
-
   }
 }
