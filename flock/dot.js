@@ -84,14 +84,16 @@ class Dot {
     }).filter(item => item)
     // Push away from other dots
     s.forEach(item => {
-      // not so powerful
-      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location)).normalize()
+      // adjust to the direction of the wall
+      const d = dist(this.location.x, this.location.y, item.x, item.y)
+      // push away from the wall
+      this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location))
 
     })
   }
 
   steerAwayFromClosestVector (vector) {
-    this.vel.add(p5.Vector.sub(this.location, vector.location))
+    this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(0.1)
   }
 
   markClosestVector (vector) {
@@ -107,12 +109,12 @@ class Dot {
     this.vel.add(this.vel)
 
     // this.markClosestVector(closestVector)
+    this.steerAwayFromClosestVector(closestVector)
     this.steerAwayFromClosestWall(walls)
-    // this.steerAwayFromClosestVector(closestVector)
 
-    this.vel.setMag(2)
+    this.vel.limit(0.1)
     this.speed.add(this.vel)
-    this.speed.setMag(2)
+    this.speed.limit(6)
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
@@ -122,8 +124,8 @@ class Dot {
   render () {
     // ellipse(this.location.x, this.location.y, 10);
     // const center = createVector(width / 2, height / 2);
-    this.markLineOfSight()
-    this.arrowHead(this.location, this.speed)
+    // this.markLineOfSight()
+    this.arrowHead(this.speed, this.location)
     // this.guideLines.forEach(guideLine => {
     //   line(this.location.x, this.location.y, guideLine.x, guideLine.y)
     // })
