@@ -78,14 +78,7 @@ class Dot {
     return this.location.x < 0 || this.location.x > width || this.location.y < 0 || this.location.y > height
   }
 
-  update (vector, walls) {
-    //if(vector) {
-    //  // this.vel = p5.Vector.sub(vector.location, this.location);
-    //}
-    // this.vel = p5.Vector.sub(s, this.location);
-    this.vel.add(this.vel)
-    line(this.location.x, this.location.y, vector.location.x, vector.location.y)
-
+  steerAwayFromClosestWall (walls) {
     const s = this.guideLines.map(guideLine => {
       return this.closestWall(guideLine.x, guideLine.y, walls);
     }).filter(item => item)
@@ -94,16 +87,32 @@ class Dot {
     s.forEach(item => {
       this.vel.sub(p5.Vector.sub(createVector(item.x, item.y), this.location))
     })
+  }
 
-    // TODO: this is not working. push awayt form the vector
-    // this.vel.sub(vector.location)
-    // this.vel.sub(p5.Vector.sub(this.location, vector.location))
+  steerAwayFromClosestVector (vector) {
+    this.vel.add(p5.Vector.sub(this.location, vector.location))
+  }
 
-    this.vel.limit(0.1)
+  markClosestVector (vector) {
+    line(this.location.x, this.location.y, vector.location.x, vector.location.y)
+  }
+  
+  markLineOfSight () {
+    // mark staright line in fornt
+    line(this.location.x, this.location.y, this.location.x + this.speed.x * 20, this.location.y + this.speed.y * 20)
+  }
+
+  update (closestVector, walls) {
+    this.vel.add(this.vel)
+
+    // this.markClosestVector(closestVector)
+    this.steerAwayFromClosestWall(walls)
+    this.markLineOfSight()
+    // this.steerAwayFromClosestVector(closestVector)
+
+    this.vel.normalize()
     this.speed.add(this.vel)
-    this.speed.limit(6)
-    // const hea = createVector(this.location.x, this.location.y)
-    // line(this.location.x, this.location.y, hea.x, hea.y)
+    this.speed.normalize()
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
@@ -111,10 +120,12 @@ class Dot {
   }
 
   render () {
-    ellipse(this.location.x, this.location.y, 10);
-    this.guideLines.forEach(guideLine => {
-      // line(this.location.x, this.location.y, guideLine.x, guideLine.y)
-    })
+    // ellipse(this.location.x, this.location.y, 10);
+    const center = createVector(width / 2, height / 2);
+    // this.arrowHead(center, this.location)
+    // this.guideLines.forEach(guideLine => {
+    //   line(this.location.x, this.location.y, guideLine.x, guideLine.y)
+    // })
   }
 
   // line intercept math by Paul Bourke http://paulbourke.net/geometry/pointlineplane/
@@ -145,5 +156,16 @@ class Dot {
     let y = y1 + ua * (y2 - y1);
 
     return { x, y };
+  }
+
+  arrowHead(start) {
+    const offset = 10;
+    push() //start new drawing state
+    var angle = atan2(this.location.y - start.y, this.location.x - start.x); //calculates the angle of the line
+    translate(this.location.x, this.location.y); //moves the origin to the center of the line
+    rotate(angle-HALF_PI);
+    triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
+    pop();
+
   }
 }

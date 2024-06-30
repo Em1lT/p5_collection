@@ -1,9 +1,10 @@
-numOfDots = 200
+numOfDots = 20
 dots = [];
 walls = [];
 
 function setup() {
 	createCanvas(800, 800);  
+  angleMode(DEGREES);
   for(let i = 1; i <= numOfDots; i++) {
     const location = createVector(random(0, width - 10), random(0, height - 10))
     dots.push(new Dot(location, i, undefined))
