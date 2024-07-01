@@ -29,16 +29,19 @@ class Dot {
       return distA - distB;
     });
 
-    if (numOfDots === 1) {
-      // Return the first dot in the sorted array without array
-      return validDots.slice(0, 1)[0];
-    }
+
+    // TODO: filter out far away dots
+    const closeDots = dots.filter(
+      item => dist(this.location.x, this.location.y, item.location.x, item.location.y) < 100
+    );
+
+
     // Return the first three dots in the sorted array, or fewer if less than three
-    if (validDots.length <= numOfDots) {
-      return validDots;
+    if (closeDots.length <= numOfDots) {
+      return closeDots;
     }
 
-    return validDots.slice(0, numOfDots);
+    return closeDots.slice(0, numOfDots);
   }
 
   closestWall(x ,y ,walls) {
@@ -102,7 +105,7 @@ class Dot {
      // calculate the heading of the vectors
      vectors.forEach(vector => {
        const heading = p5.Vector.sub(vector.location, this.location)
-       heading.limit(0.07)
+       heading.limit(0.09)
        this.vel.add(heading)
      })
   }
@@ -111,13 +114,16 @@ class Dot {
     if(!vectors) return
     vectors.forEach(vector => {
       const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
-      const g = map(d, 0, 100, 0.1, 0.2)
+      const g = map(d, 0, 100, 0.1, 0.55)
       this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
     })
   }
 
-  markClosestVector (vector) {
-    line(this.location.x, this.location.y, vector.location.x, vector.location.y)
+  markClosestVector (vectors) {
+    if(!vectors) return
+    vectors.forEach(vector => {
+      line(this.location.x, this.location.y, vector.location.x, vector.location.y)
+    })
   }
   
   markLineOfSight () {
@@ -131,6 +137,7 @@ class Dot {
     this.steerAwayFromClosestVector(closestVectors)
     this.steerTowardsTheGroup(closestVectors)
     this.steerAwayFromClosestWall(walls)
+    // this.markClosestVector(closestVectors)
 
     this.speed.add(this.vel)
     this.speed.limit(4)
