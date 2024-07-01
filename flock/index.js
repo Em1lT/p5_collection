@@ -3,7 +3,7 @@ dots = [];
 walls = [];
 
 function setup() {
-	createCanvas(800, 800);  
+	createCanvas(1400, 900);  
   angleMode(DEGREES);
   for(let i = 1; i <= numOfDots; i++) {
     const location = createVector(random(0, width - 10), random(0, height - 10))
@@ -20,7 +20,7 @@ function setup() {
 function udpateDots () {
   dots.forEach((dot) => {
     const dotsArrCopy = [...dots]
-    const closest = dot.getClosest(dotsArrCopy);
+    const closest = dot.getClosestDots(dotsArrCopy, 3);
     dot.update(closest, walls)
     dot.outOfBounds() && dots.splice(dots.indexOf(dot), 1)
     dot.render()

@@ -17,23 +17,28 @@ class Dot {
     ]
   }
 
-  getClosest(dots) {
-    const closest = dots.reduce((closest, item) => {
-      if (!closest && this.location.x !== item.location.x && this.location.y !== item.location.y) {
-        return item; // First iteration, set the first item as the closest
-      }
-      if(!closest) {
-        return
-      }
-      const c1 = dist(item.location.x, item.location.y, this.location.x, this.location.y);
-      const c2 = dist(closest.location.x, closest.location.y, this.location.x, this.location.y);
-      if (c1 < c2 && c1 !== 0 && c2 !== 0) {
-        return item; // Current item is closer, so it becomes the new closest
-      }
-      return closest; // No closer item found, keep the current closest
-    }, null);
+  getClosestDots(dots, numOfDots) {
+    const validDots = dots.filter(
+      item => this.location.x !== item.location.x || this.location.y !== item.location.y
+    );
 
-    return closest;
+   // Sort the valid dots by their distance to `this.location`
+    validDots.sort((a, b) => {
+      const distA = dist(a.location.x, a.location.y, this.location.x, this.location.y);
+      const distB = dist(b.location.x, b.location.y, this.location.x, this.location.y);
+      return distA - distB;
+    });
+
+    if (numOfDots === 1) {
+      // Return the first dot in the sorted array without array
+      return validDots.slice(0, 1)[0];
+    }
+    // Return the first three dots in the sorted array, or fewer if less than three
+    if (validDots.length <= numOfDots) {
+      return validDots;
+    }
+
+    return validDots.slice(0, numOfDots);
   }
 
   closestWall(x ,y ,walls) {
@@ -93,18 +98,22 @@ class Dot {
     })
   }
 
-   steerTowardsTheGroup(vector) {
-     // copy vector heading
-     const heading = p5.Vector.sub(vector.location, this.location)
-     heading.normalize()
-     this.vel.add(heading)
+   steerTowardsTheGroup(vectors) {
+     // calculate the heading of the vectors
+     vectors.forEach(vector => {
+       const heading = p5.Vector.sub(vector.location, this.location)
+       heading.limit(0.07)
+       this.vel.add(heading)
+     })
   }
 
-  steerAwayFromClosestVector (vector) {
-    if(!vector) return
-    const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
-    const g = map(d, 0, 100, 0.01, 0.1)
-    this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
+  steerAwayFromClosestVector (vectors) {
+    if(!vectors) return
+    vectors.forEach(vector => {
+      const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
+      const g = map(d, 0, 100, 0.1, 0.2)
+      this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
+    })
   }
 
   markClosestVector (vector) {
@@ -116,12 +125,11 @@ class Dot {
     line(this.location.x, this.location.y, this.location.x + this.speed.x * 10, this.location.y + this.speed.y * 10)
   }
 
-  update (closestVector, walls) {
+  update (closestVectors, walls) {
     this.vel.add(this.vel)
 
-    // this.markClosestVector(closestVector)
-    this.steerTowardsTheGroup(closestVector)
-    this.steerAwayFromClosestVector(closestVector)
+    this.steerAwayFromClosestVector(closestVectors)
+    this.steerTowardsTheGroup(closestVectors)
     this.steerAwayFromClosestWall(walls)
 
     this.speed.add(this.vel)
