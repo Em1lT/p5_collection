@@ -103,7 +103,7 @@ class Dot {
   steerAwayFromClosestVector (vector) {
     if(!vector) return
     const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
-    const g = map(d, 0, 100, 0.1, 0.5)
+    const g = map(d, 0, 100, 0.01, 0.1)
     this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
   }
 
@@ -134,7 +134,6 @@ class Dot {
 
   render () {
     ellipse(this.location.x, this.location.y, 10);
-    // const center = createVector(width / 2, height / 2);
     this.markLineOfSight()
     // this.arrowHead(this.vel, this.location)
     // this.guideLines.forEach(guideLine => {
