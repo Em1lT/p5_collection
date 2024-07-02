@@ -151,6 +151,7 @@ class Dot {
 
     this.steerAwayFromClosestVector(closestVectors)
     this.steerTowardsTheGroup(closestVectors)
+    this.speed.add(this.vel)
     this.steerAwayFromClosestWall(walls)
     // this.markClosestVector(closestVectors)
 
