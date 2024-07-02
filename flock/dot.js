@@ -2,7 +2,9 @@
 class Dot {
   constructor (location, index, pathIndex) {
     this.location = location;
+    this.pathLength = 100;
     this.index = index
+		this.path = [];
     this.pathIndex = pathIndex;
     this.speed = p5.Vector.random2D()
     this.degr = createVector(0,0)
@@ -43,6 +45,19 @@ class Dot {
 
     return closeDots.slice(0, numOfDots);
   }
+
+	addPath(x1, y1, x2, y2) {
+		this.path.push({
+			p1: createVector(x1, y1),
+			p2: createVector(x2, y2),
+		});
+	}
+	checkPathLength() {
+		if (this.path.length >= this.pathLength) {
+			this.path.shift();
+			this.path.shift();
+		}
+	}
 
   closestWall(x ,y ,walls) {
     let closest;
@@ -145,12 +160,36 @@ class Dot {
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
     this.updateGuideLines()
+
+		this.addPath(
+			this.location.x,
+			this.location.y,
+			this.location.x,
+			this.location.y
+		);
+		this.checkPathLength();
   }
+
+	renderPath() {
+		for (let i = 0; i < this.path.length; i++) {
+			const s = map(i, 0, this.pathLength, 0, 2);
+			strokeWeight(s);
+			if (i % 2 == 0) {
+				line(
+					this.path[i].p1.x,
+					this.path[i].p1.y,
+					this.path[i].p2.x,
+					this.path[i].p2.y
+				);
+			}
+		}
+    strokeWeight(1);
+	}
 
   render () {
     ellipse(this.location.x, this.location.y, 10);
     this.markLineOfSight()
-    // this.arrowHead(this.vel, this.location)
+		this.renderPath();
     // this.guideLines.forEach(guideLine => {
     //   line(this.location.x, this.location.y, guideLine.x, guideLine.y)
     // })
