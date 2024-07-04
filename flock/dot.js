@@ -32,7 +32,6 @@ class Dot {
     });
 
 
-    // TODO: filter out far away dots
     const closeDots = dots.filter(
       item => dist(this.location.x, this.location.y, item.location.x, item.location.y) < 100
     );
@@ -125,7 +124,7 @@ class Dot {
      })
   }
 
-  steerAwayFromClosestVector (vectors) {
+  steerAwayFromClosestVectors (vectors) {
     if(!vectors) return
     vectors.forEach(vector => {
       const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
@@ -149,7 +148,7 @@ class Dot {
   update (closestVectors, walls) {
     this.vel.add(this.vel)
 
-    this.steerAwayFromClosestVector(closestVectors)
+    this.steerAwayFromClosestVectors(closestVectors)
     this.steerTowardsTheGroup(closestVectors)
     this.speed.add(this.vel)
     this.steerAwayFromClosestWall(walls)
