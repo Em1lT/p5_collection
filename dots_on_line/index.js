@@ -1,4 +1,4 @@
-numOfDots = 1000
+numOfDots = 200
 mouseRadius = 300
 dots = [];
 
@@ -13,14 +13,15 @@ function setup() {
 function udpateDots () {
   dots.forEach((dot) => {
       const pointer = createVector(mouseX, mouseY)
-      if(dot.closeToPointer(pointer, mouseRadius)) {
+      dot.closeToPointer(pointer, mouseRadius)
+      if(dot.IsOnpointerRadius) {
         dot.pushFromPointer(pointer, mouseRadius)
         fill('red')
       } else {
         fill('white')
       }
+      dot.update(dots)
       dot.render()
-      dot.update()
       fill('white')
   })
 }
