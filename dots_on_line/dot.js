@@ -44,7 +44,7 @@ class Dot {
       closestDots.forEach(item => {
         const d = dist(this.location.x, this.location.y, item.location.x, item.location.y)
         const g = map(d, 0, 100, 1, 3)
-        this.vel.sub(p5.Vector.sub(createVector(item.location.x, item.location.y), this.location)).limit(g)
+        this.vel.add(p5.Vector.add(createVector(item.location.x, item.location.y), this.location)).limit(g)
         this.speed.add(this.vel)
         this.speed.limit(0.5)
         this.location.add(this.speed)
