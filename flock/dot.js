@@ -33,7 +33,7 @@ class Dot {
 
 
     const closeDots = dots.filter(
-      item => dist(this.location.x, this.location.y, item.location.x, item.location.y) < 100
+      item => dist(this.location.x, this.location.y, item.location.x, item.location.y) < 200
     );
 
 
@@ -118,18 +118,20 @@ class Dot {
    steerTowardsTheGroup(vectors) {
      // calculate the heading of the vectors
      vectors.forEach(vector => {
+
        const heading = p5.Vector.sub(vector.location, this.location)
-       heading.limit(0.09)
-       this.vel.add(heading)
+       // distance = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
+       this.vel.add(heading).limit(0.7)
      })
   }
 
   steerAwayFromClosestVectors (vectors) {
+    // get the averate vector from the vectors
     if(!vectors) return
     vectors.forEach(vector => {
-      const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
-      const g = map(d, 0, 100, 0.1, 0.55)
-      this.vel.add(p5.Vector.sub(this.location, vector.location)).limit(g)
+      // const d = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
+      // const g = map(d, 0, 100, 0.1, 0.7)
+      this.vel.add(p5.Vector.sub(this.speed, vector.speed)).limit(0.6)
     })
   }
 
@@ -149,13 +151,13 @@ class Dot {
     this.vel.add(this.vel)
 
     this.steerAwayFromClosestVectors(closestVectors)
-    this.steerTowardsTheGroup(closestVectors)
     this.speed.add(this.vel)
+    this.steerTowardsTheGroup(closestVectors)
     this.steerAwayFromClosestWall(walls)
     // this.markClosestVector(closestVectors)
 
     this.speed.add(this.vel)
-    this.speed.limit(4)
+    this.speed.limit(3)
     
     this.location.add(this.speed);
 		this.vel = createVector(0, 0);
