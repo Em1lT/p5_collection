@@ -3,10 +3,10 @@ let qtree;
 
 function setup() {
   createCanvas(boundary, boundary);
-  background(255);
+  background(225);
   const bound = new Rectangle(0, 0, boundary, boundary)
-  qtree = new QuadTree(bound, 4)
-  for (let i = 0; i < 10; i++) {
+  qtree = new QuadTree(bound, 2)
+  for (let i = 0; i < 100; i++) {
     const randomX = Math.floor(Math.random() * boundary)
     const randomY = Math.floor(Math.random() * boundary)
     const node = new Point(randomX, randomY)
@@ -15,7 +15,7 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(225);
   frameRate(1)
   qtree.render()
 

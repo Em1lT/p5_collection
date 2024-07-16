@@ -16,6 +16,10 @@ class Rectangle {
     this.w = w;
     this.h = h;
   }
+
+  contains(point) {
+    return point.x >= this.x && point.x <= this.x + this.w && point.y >= this.y && point.y <= this.y + this.h
+  }
 }
 
 class QuadTree {
@@ -25,6 +29,10 @@ class QuadTree {
     this.children = []
     this.items = []
     this.divided = false
+  }
+
+  contains(point) {
+    return this.bound.contains(point)
   }
 
   subdivide() {
@@ -38,34 +46,61 @@ class QuadTree {
     const bottomLeft = new QuadTree(new Rectangle(x, y + h/2, w/2, h/2), this.treshold)
     const bottomRight = new QuadTree(new Rectangle(x + w/2, y + h/2, w/2, h/2), this.treshold)
 
-    this.children.push(topLeft)
-    this.children.push(topRight)
-    this.children.push(bottomLeft)
-    this.children.push(bottomRight)
+    this.topLeft = topLeft
+    this.topRight = topRight
+    this.bottomLeft = bottomLeft
+    this.bottomRight = bottomRight
     this.divided = true
   }
 
   addChild(child) {
-    this.items.push(child)
-    // add point if is in bound & check 
+    if (!this.bound.contains(child)) {
+      return false;
+    }
+    if (this.items.length <= this.treshold) {
+      this.items.push(child)
+      return true
+    }
+
+    if (this.items.length >= this.treshold){
+      this.subdivide()
+    }
+
+    if (this.divided) {
+      if (this.topLeft.contains(child)) {
+        this.topLeft.addChild(child)
+        return true
+      }
+      if (this.topRight.contains(child)) {
+        this.topRight.addChild(child)
+        return true
+      }
+      if (this.bottomLeft.contains(child)) {
+        this.bottomLeft.addChild(child)
+        return true
+      }
+      if (this.bottomRight.contains(child)) {
+        this.bottomRight.addChild(child)
+        return true
+      }
+    }
   }
 
 
   render() {
+    rectMode(CENTER);
+    noFill();
     strokeWeight(2)
     rect(this.bound.x, this.bound.y, this.bound.w , this.bound.h);
     strokeWeight(1)
     this.items.forEach(child => {
       child.render()
     })
-    if (this.items.length > this.treshold){
-      this.subdivide()
-    }
     if (this.divided) {
-      this.children.forEach(child => {
-        console.log('child', child)
-        child.render()
-      })
+      this.topLeft.render()
+      this.topRight.render()
+      this.bottomLeft.render()
+      this.bottomRight.render()
      }
   }
 }
