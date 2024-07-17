@@ -41,10 +41,14 @@ class QuadTree {
     const w = this.bound.w
     const h = this.bound.h
 
-    const topLeft = new QuadTree(new Rectangle(x, y, w/2, h/2), this.treshold)
-    const topRight = new QuadTree(new Rectangle(x + w/2, y, w/2, h/2), this.treshold)
-    const bottomLeft = new QuadTree(new Rectangle(x, y + h/2, w/2, h/2), this.treshold)
-    const bottomRight = new QuadTree(new Rectangle(x + w/2, y + h/2, w/2, h/2), this.treshold)
+    let topLeft = new Rectangle(x + w / 2, y - h / 2, w / 2, h / 2);
+    this.northeast = new QuadTree(ne, this.capacity);
+    let topRight = new Rectangle(x - w / 2, y - h / 2, w / 2, h / 2);
+    this.northwest = new QuadTree(nw, this.capacity);
+    let bottomLeft = new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2);
+    this.southeast = new QuadTree(se, this.capacity);
+    let bottomRight = new Rectangle(x - w / 2, y + h / 2, w / 2, h / 2);
+    this.southwest = new QuadTree(sw, this.capacity);
 
     this.topLeft = topLeft
     this.topRight = topRight
@@ -88,19 +92,18 @@ class QuadTree {
 
 
   render() {
-    rectMode(CENTER);
     noFill();
-    strokeWeight(2)
-    rect(this.bound.x, this.bound.y, this.bound.w , this.bound.h);
-    strokeWeight(1)
-    this.items.forEach(child => {
-      child.render()
-    })
+    rectMode(CENTER);
+    rect(this.bound.x, this.bound.y, this.bound.w * 2, this.bound.h * 2);
+
     if (this.divided) {
       this.topLeft.render()
       this.topRight.render()
       this.bottomLeft.render()
       this.bottomRight.render()
      }
+    this.items.forEach(child => {
+      child.render()
+    })
   }
 }

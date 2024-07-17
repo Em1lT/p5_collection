@@ -18,7 +18,6 @@ function draw() {
   background(225);
   frameRate(1)
   qtree.render()
-
 }
 /*
 let gridSize = 3
