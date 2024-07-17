@@ -41,19 +41,14 @@ class QuadTree {
     const w = this.bound.w
     const h = this.bound.h
 
-    let topLeft = new Rectangle(x + w / 2, y - h / 2, w / 2, h / 2);
-    this.northeast = new QuadTree(ne, this.capacity);
-    let topRight = new Rectangle(x - w / 2, y - h / 2, w / 2, h / 2);
-    this.northwest = new QuadTree(nw, this.capacity);
-    let bottomLeft = new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2);
-    this.southeast = new QuadTree(se, this.capacity);
-    let bottomRight = new Rectangle(x - w / 2, y + h / 2, w / 2, h / 2);
-    this.southwest = new QuadTree(sw, this.capacity);
-
-    this.topLeft = topLeft
-    this.topRight = topRight
-    this.bottomLeft = bottomLeft
-    this.bottomRight = bottomRight
+    let ne = new Rectangle(x + w / 2, y - h / 2, w / 2, h / 2);
+    this.topLeft = new QuadTree(ne, this.treshold);
+    let nw = new Rectangle(x - w / 2, y - h / 2, w / 2, h / 2);
+    this.topRight = new QuadTree(nw, this.treshold);
+    let se = new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2);
+    this.bottomRight = new QuadTree(se, this.treshold);
+    let sw = new Rectangle(x - w / 2, y + h / 2, w / 2, h / 2);
+    this.bottomLeft = new QuadTree(sw, this.treshold);
     this.divided = true
   }
 
@@ -61,32 +56,29 @@ class QuadTree {
     if (!this.bound.contains(child)) {
       return false;
     }
-    if (this.items.length <= this.treshold) {
+
+    if (this.items.length < this.treshold) {
       this.items.push(child)
       return true
-    }
+    } else {
 
-    if (this.items.length >= this.treshold){
+    if (!this.divided) {
       this.subdivide()
     }
-
     if (this.divided) {
-      if (this.topLeft.contains(child)) {
-        this.topLeft.addChild(child)
+      if (this.topLeft.addChild(child)) {
         return true
       }
-      if (this.topRight.contains(child)) {
-        this.topRight.addChild(child)
+      if (this.topRight.addChild(child)) {
         return true
       }
-      if (this.bottomLeft.contains(child)) {
-        this.bottomLeft.addChild(child)
+      if (this.bottomLeft.addChild(child)) {
         return true
       }
-      if (this.bottomRight.contains(child)) {
-        this.bottomRight.addChild(child)
+      if (this.bottomRight.addChild(child)) {
         return true
       }
+    }
     }
   }
 

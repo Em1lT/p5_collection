@@ -6,7 +6,7 @@ function setup() {
   background(225);
   const bound = new Rectangle(0, 0, boundary, boundary)
   qtree = new QuadTree(bound, 2)
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const randomX = Math.floor(Math.random() * boundary)
     const randomY = Math.floor(Math.random() * boundary)
     const node = new Point(randomX, randomY)
