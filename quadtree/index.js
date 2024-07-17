@@ -2,11 +2,11 @@ const boundary = 400
 let qtree;
 
 function setup() {
-  createCanvas(boundary, boundary);
+  createCanvas(400, 400);
   background(225);
-  const bound = new Rectangle(0, 0, boundary, boundary)
-  qtree = new QuadTree(bound, 2)
-  for (let i = 0; i < 10; i++) {
+  const bound = new Rectangle(200, 200, 200, 200)
+  qtree = new QuadTree(bound, 4)
+  for (let i = 0; i < 20; i++) {
     const randomX = Math.floor(Math.random() * boundary)
     const randomY = Math.floor(Math.random() * boundary)
     const node = new Point(randomX, randomY)
@@ -16,8 +16,10 @@ function setup() {
 
 function draw() {
   background(225);
-  frameRate(1)
+  frameRate(10)
   qtree.render()
+  // const r = Rectangle(mouseX, mouseY, 10, 10)
+  rect(mouseX, mouseY, 20, 20)
 }
 /*
 let gridSize = 3

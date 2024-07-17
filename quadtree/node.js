@@ -18,7 +18,10 @@ class Rectangle {
   }
 
   contains(point) {
-    return point.x >= this.x && point.x <= this.x + this.w && point.y >= this.y && point.y <= this.y + this.h
+    return (point.x >= this.x - this.w &&
+      point.x < this.x + this.w &&
+      point.y >= this.y - this.h &&
+      point.y < this.y + this.h);
   }
 }
 
@@ -61,11 +64,9 @@ class QuadTree {
       this.items.push(child)
       return true
     } else {
-
-    if (!this.divided) {
-      this.subdivide()
-    }
-    if (this.divided) {
+      if (!this.divided) {
+        this.subdivide()
+      }
       if (this.topLeft.addChild(child)) {
         return true
       }
@@ -78,7 +79,6 @@ class QuadTree {
       if (this.bottomRight.addChild(child)) {
         return true
       }
-    }
     }
   }
 
