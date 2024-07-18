@@ -6,7 +6,7 @@ function setup() {
   background(225);
   const bound = new Rectangle(200, 200, 200, 200)
   qtree = new QuadTree(bound, 4)
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 12000; i++) {
     // const randomX = Math.floor(Math.random() * boundary)
     // const randomY = Math.floor(Math.random() * boundary)
     const randomX = randomGaussian(width / 2, width / 8);
@@ -16,10 +16,15 @@ function setup() {
   }
 }
 
+function showInfo() {
+  text ('FPS: ' + frameRate(), 10, 20)
+}
+
 function draw() {
   background(225);
-  frameRate(10)
+  frameRate(60)
   qtree.render()
+  showInfo()
   const range = new Rectangle(mouseX, mouseY, 25, 25);
   if (mouseX < width && mouseY < height) {
     rect(range.x, range.y, range.w * 2, range.h * 2);
