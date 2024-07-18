@@ -3,9 +3,13 @@ class Point {
     this.x = x;
     this.y = y;
   }
+  update() {
+    this.x += 0.8;
+    this.y += 0.8;
+  }
 
   render() {
-    circle(this.x, this.y, 10)
+    circle(this.x, this.y, 2)
   }
 }
 
@@ -22,6 +26,13 @@ class Rectangle {
       point.x < this.x + this.w &&
       point.y >= this.y - this.h &&
       point.y < this.y + this.h);
+  }
+
+  intersects(range) {
+    return !(range.x - range.w > this.x + this.w ||
+      range.x + range.w < this.x - this.w ||
+      range.y - range.h > this.y + this.h ||
+      range.y + range.h < this.y - this.h);
   }
 }
 
@@ -82,6 +93,27 @@ class QuadTree {
     }
   }
 
+ query(range, found) {
+    if (!found) {
+      found = [];
+    }
+    if (!this.bound.intersects(range)) {
+      return;
+    } else {
+      for (let p of this.items) {
+        if (range.contains(p)) {
+          found.push(p);
+        }
+      }
+      if (this.divided) {
+        this.topLeft.query(range, found);
+        this.topRight.query(range, found);
+        this.bottomLeft.query(range, found);
+        this.bottomRight.query(range, found);
+      }
+    }
+    return found;
+  }
 
   render() {
     noFill();
@@ -95,7 +127,7 @@ class QuadTree {
       this.bottomRight.render()
      }
     this.items.forEach(child => {
-      child.render()
+        child.render()
     })
   }
 }
