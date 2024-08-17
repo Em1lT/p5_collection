@@ -100,6 +100,13 @@ function mousePressed() {
   }
 }
 
+function adjacentElements(i, j) {
+  grid[i][j+1].type = 'sand'
+  grid[i][j-1].type = 'sand'
+  grid[i+1][j].type = 'sand'
+  grid[i-1][j].type = 'sand'
+}
+
 
 function spawnElement({x,y}) {  
   for (let i = 0; i < gridSize; i++ ) {
@@ -107,6 +114,7 @@ function spawnElement({x,y}) {
       if(grid[i][j].location.x < x && grid[i][j].location.x + gridWidth > x) {
         if(grid[i][j].location.y < y && grid[i][j].location.y + gridWidth > y) {
           grid[i][j].type = selectedElement
+          adjacentElements(i,j)
         }
       }
     }
