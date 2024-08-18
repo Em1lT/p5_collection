@@ -5,9 +5,9 @@ let selectedElement = 'sand'
 let isMousePressed = false
 let isFirstTile = true
 let currentGrid = null;
-let currentGridCoords = [];
 let canvasSize = 800 
 let lost = false
+let path = []
 
 const possibleObjects = [
 {
@@ -63,7 +63,7 @@ function setupSquares() {
     for (let j = 0; j < gridSize; j++ ) {
       const widthBox = width / gridSize * i 
       const heightBox = height / gridSize * j 
-      tempGrid.push({type: 'air', location: createVector(widthBox, heightBox, 1)})
+      tempGrid.push({type: 'air', location: createVector(widthBox, heightBox, 1), i: i, j:j})
     }
     grid.push(tempGrid)
   }
@@ -71,7 +71,7 @@ function setupSquares() {
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
-  frameRate(1);
+  frameRate(10);
   strokeWeight(1);
   colorMode(HSL, 255);
   setupSquares();
@@ -112,28 +112,66 @@ function getRandomTile () {
 function draw() {
   background(220);
   drawSquares();
+  // grid[0][0].type = 'forest'
   if(isFirstTile) {
     let [i, j] = getRandomTile()
     isFirstTile = false
     currentGrid = grid[i][j]
     currentGrid.type = 'forest'
-    currentGridCoords = [i, j]
+    path.push(currentGrid)
   } else { 
-    let adjacentElements = getAdjacentElements(currentGridCoords[0], currentGridCoords[1])
-    // get random adjjacent element
-    const adjacentElement = adjacentElements[Math.floor(Math.random() * adjacentElements.length)]
-    console.log(adjacentElement)
-    currentGrid = adjacentElement
-    currentGridCoords = [currentGrid.location.x, currentGrid.location.y]
-    currentGrid.type = 'forest'
+
+    const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
+    if(adjacentElements.length === 0) {
+      // go backwards to find the first element that is not air
+      for(let i = path.length; i = 0; i--) {
+        const elements = getAdjacentElements(path[i].i, path[i].j)
+        console.log(elements)
+        if(elements.length > 0) {
+          const adjacente = adjacentelements[math.floor(math.random() * adjacentelements.length)]
+          currentgrid = adjacente
+          path.push(currentgrid)
+          currentgrid.type = 'forest'
+          break
+        } else {
+          continue;
+        }
+      }
+    } else {
+      const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
+      const adjacentElement = adjacentElements[Math.floor(Math.random() * adjacentElements.length)]
+      currentGrid = adjacentElement
+      path.push(currentGrid)
+      currentGrid.type = 'forest'
+    }
   }
 }
 
 function getAdjacentElements(i, j) {
-  return [
-    grid[i][j+1],
-    grid[i][j-1],
-    grid[i+1][j],
-    grid[i-1][j],
-  ]
+  if(grid[i+1] !== undefined && grid[i+1][j] !== undefined && grid[i-1] !== undefined && grid[i-1][j] !== undefined) {
+     return [
+      grid[i][j+1],
+      grid[i][j-1],
+      grid[i+1][j],
+      grid[i-1][j],
+      // filter out if not air
+    ].filter(el => el !== undefined)
+    .filter(el => el.type === 'air')
+  } else if (grid[i+1] === undefined) {
+     return [
+      grid[i][j+1],
+      grid[i][j-1],
+      grid[i-1][j],
+      // filter out if not air
+    ].filter(el => el !== undefined)
+    .filter(el => el.type === 'air')
+  } else if (grid[i-1] === undefined) {
+     return [
+      grid[i][j+1],
+      grid[i][j-1],
+      grid[i+1][j],
+      // filter out if not air
+    ].filter(el => el !== undefined)
+    .filter(el => el.type === 'air')
+  }
 }
