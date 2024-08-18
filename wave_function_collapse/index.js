@@ -1,5 +1,5 @@
 let gridSize = 10
-let gridWidth = 75
+let gridWidth = 80
 let grid = []
 let selectedElement = 'sand'
 let isMousePressed = false
@@ -84,19 +84,15 @@ function drawSquares() {
       const heightBox = height / gridSize * j 
       square(widthBox,heightBox, gridWidth)
       if(grid[i][j].type === 'sand') {
-        fill(color(255, 255, 102))
-      } 
-      if(grid[i][j].type === 'water') {
-        fill(color(51, 153, 255))
-      }
-      if(grid[i][j].type === 'land') {
-        fill(color(102, 204, 0))
-      }
-      if(grid[i][j].type === 'deepWater') {
-        fill(color(0, 0, 204))
-      }
-      if(grid[i][j].type === 'forest') {
-        fill('green')
+        fill(color('#f2d468'))
+      } else if(grid[i][j].type === 'water') {
+        fill(color('#0277de'))
+      } else if(grid[i][j].type === 'land') {
+        fill(color('#37fa6b'))
+      } else if(grid[i][j].type === 'deepWater') {
+        fill(color('#0209d1'))
+      } else if(grid[i][j].type === 'forest') {
+        fill( color('#00661b'))
       } else {
         fill('skyBlue')
       }
@@ -112,38 +108,41 @@ function getRandomTile () {
 function draw() {
   background(220);
   drawSquares();
-  // grid[0][0].type = 'forest'
-  if(isFirstTile) {
-    let [i, j] = getRandomTile()
-    isFirstTile = false
-    currentGrid = grid[i][j]
-    currentGrid.type = 'forest'
-    path.push(currentGrid)
-  } else { 
-
-    const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
-    if(adjacentElements.length === 0) {
-      // go backwards to find the first element that is not air
-      for(let i = path.length; i = 0; i--) {
-        const elements = getAdjacentElements(path[i].i, path[i].j)
-        console.log(elements)
-        if(elements.length > 0) {
-          const adjacente = adjacentelements[math.floor(math.random() * adjacentelements.length)]
-          currentgrid = adjacente
-          path.push(currentgrid)
-          currentgrid.type = 'forest'
-          break
-        } else {
-          continue;
-        }
-      }
-    } else {
-      const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
-      const adjacentElement = adjacentElements[Math.floor(Math.random() * adjacentElements.length)]
-      currentGrid = adjacentElement
+  if(path.length !== (gridSize * gridSize)) {
+    if(isFirstTile) {
+      let [i, j] = getRandomTile()
+      isFirstTile = false
+      currentGrid = grid[i][j]
+      currentGrid.type = 'land'
       path.push(currentGrid)
-      currentGrid.type = 'forest'
+    } else { 
+      const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
+      if(adjacentElements.length === 0) {
+        for(let i = path.length - 1; i >= 0; i--) {
+          const elements = getAdjacentElements(path[i].i, path[i].j)
+          if(elements.length > 0) {
+            const adjacentElement = elements[Math.floor(Math.random() * adjacentElements.length)]
+            currentGrid = adjacentElement
+            path.push(currentGrid)
+            // random type
+            currentGrid.type = possibleObjects[Math.floor(Math.random() * possibleObjects.length)].type
+            break
+          } else {
+            continue;
+          }
+        }
+      } else {
+        const adjacentElement = adjacentElements[Math.floor(Math.random() * adjacentElements.length)]
+        currentGrid = adjacentElement
+        path.push(currentGrid)
+        // get all adjacent elements. no filter
+        // calculate what element is next
+        // pick random from there
+        currentGrid.type = possibleObjects[Math.floor(Math.random() * possibleObjects.length)].type
+      }
     }
+  } else {
+    console.log('end')
   }
 }
 
