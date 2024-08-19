@@ -12,33 +12,40 @@ let path = []
 const possibleObjects = [
 {
     type: 'land',
-    compatibleElements: ['sand', 'forest', 'land'],
+    compatibleElements: ['sand', 'forest', 'land', 'rock'],
     notCompatibleElements: ['water', 'deepWater'],
     // color: color(102, 204, 0)
 },{
     type: 'sand',
-    compatibleElements: ['water', 'deepWater', 'land', 'sand'],
+    compatibleElements: ['water', 'deepWater', 'land', 'sand', 'rock'],
     notCompatibleElements: ['forest'],
     // color: color(255, 255, 102)
   },
 {
     type: 'water',
-    compatibleElements: ['sand', 'deepWater', 'water'],
+    compatibleElements: ['sand', 'deepWater', 'water', 'rock'],
     notCompatibleElements: ['land', 'forest'],
     // color: color(51, 153, 255)
   },
 {
     type: 'deepWater',
-    compatibleElements: ['water', 'deepWater'],
+    compatibleElements: ['water', 'deepWater', 'sand', 'rock'],
     notCompatibleElements: ['land', 'forest'],
     // color: color(0, 0, 204)
   },
 {
     type: 'forest',
-    compatibleElements: ['land', 'forest'],
+    compatibleElements: ['land', 'forest', 'rock'],
     notCompatibleElements: ['water', 'deepWater', 'sand'],
     // color: color(0, 102, 0),
   },
+{
+    type: 'rock',
+    compatibleElements: ['land', 'forest','water', 'deepWater', 'sand' ],
+    notCompatibleElements: [],
+    // color: color(0, 102, 0),
+  },
+
 ]
 
 function randomObject() {
@@ -98,6 +105,8 @@ function drawSquares() {
         fill(color('#0209d1'))
       } else if(grid[i][j].type === 'forest') {
         fill( color('#00661b'))
+      } else if(grid[i][j].type === 'rock') {
+        fill(color('#696864'))
       } else {
         fill('skyBlue')
       }
@@ -141,32 +150,15 @@ function draw() {
         currentGrid = adjacentElement
         path.push(currentGrid)
         const newAdjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
-        const compatibleElements = newAdjacentElements.filter(el => el.type !== 'air').reduce((acc, el) => {
-          const compatibleElements = possibleObjects.find(obj => obj.type === el.type).compatibleElements
-          compatibleElements.forEach(el1 => {
-            if(acc.includes(el1)) {
-              return acc
-            } else {
-              return addUniqueList(acc,[el1])
-            }
-          })
-          const notCompatibleElements = possibleObjects.find(obj => obj.type === el.type).notCompatibleElements
-          notCompatibleElements.forEach(el => {
-            if(acc.includes(el)) {
-              // remove from acc
-              acc = acc.filter(el => el !== el)
-            } else {
-              return acc
-            }
-          })
-          return acc
-        }, [])
-        const newType = compatibleElements[Math.floor(Math.random() * compatibleElements.length)]
+        const compatibleElements = getCompatibleElements(newAdjacentElements)
+        const random = Math.floor(Math.random() * compatibleElements.length)
+        const newType = compatibleElements[random]
         currentGrid.type = newType
       }
     }
   } else { }
 }
+
 function addUniqueList( list, items) {
   items.forEach(function(item) {
     if (!list.includes(item)) {
@@ -175,6 +167,33 @@ function addUniqueList( list, items) {
   });
   return list;
 }
+
+function getCompatibleElements(adjacentElements) {
+    const combatibleAdjacentElements = adjacentElements.filter(el => el.type !== 'air')
+      const s1 = combatibleAdjacentElements.reduce((acc, el) => {
+        const compatibleElements = possibleObjects.find(obj => obj.type === el.type).compatibleElements
+        compatibleElements.forEach(el1 => {
+          if(!acc.includes(el1)) {
+            return addUniqueList(acc,[el1])
+          } 
+        })
+      }, [])
+
+      // console.log('h3', acc)
+      // const notCompatibleElements = possibleObjects.find(obj => obj.type === el.type).notCompatibleElements
+      // console.log('h3.1', notCompatibleElements)
+      // notCompatibleElements.forEach(el => {
+      //   if(acc.includes(el)) {
+      //     acc = acc.filter(el => el !== el)
+      //   }
+      // })
+      //   console.log('h3.2', acc)
+      // return acc
+
+  return s
+}
+
+
 function getNextRandomAdjacentElements(i, j) {
   const adjacentElements = getAdjacentElements(i, j).filter(el => el.type === 'air')
   return adjacentElements
