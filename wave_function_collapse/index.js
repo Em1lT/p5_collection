@@ -12,28 +12,33 @@ let path = []
 const possibleObjects = [
 {
     type: 'land',
-    compatibleElements: ['sand', 'forest'],
+    compatibleElements: ['sand', 'forest', 'land'],
+    notCompatibleElements: ['water', 'deepWater'],
     // color: color(102, 204, 0)
 },{
     type: 'sand',
-    compatibleElements: ['water', 'deepWater'],
+    compatibleElements: ['water', 'deepWater', 'land', 'sand'],
+    notCompatibleElements: ['forest'],
     // color: color(255, 255, 102)
   },
 {
     type: 'water',
-    compatibleElements: ['sand', 'deepWater'],
+    compatibleElements: ['sand', 'deepWater', 'water'],
+    notCompatibleElements: ['land', 'forest'],
     // color: color(51, 153, 255)
   },
 {
     type: 'deepWater',
-    compatibleElements: ['water'],
+    compatibleElements: ['water', 'deepWater'],
+    notCompatibleElements: ['land', 'forest'],
     // color: color(0, 0, 204)
   },
 {
     type: 'forest',
-    compatibleElements: ['land'],
+    compatibleElements: ['land', 'forest'],
+    notCompatibleElements: ['water', 'deepWater', 'sand'],
     // color: color(0, 102, 0),
-  }
+  },
 ]
 
 function randomObject() {
@@ -116,7 +121,7 @@ function draw() {
       currentGrid.type = 'land'
       path.push(currentGrid)
     } else { 
-      const adjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
+      const adjacentElements = getNextRandomAdjacentElements(currentGrid.i, currentGrid.j)
       if(adjacentElements.length === 0) {
         for(let i = path.length - 1; i >= 0; i--) {
           const elements = getAdjacentElements(path[i].i, path[i].j)
@@ -135,15 +140,44 @@ function draw() {
         const adjacentElement = adjacentElements[Math.floor(Math.random() * adjacentElements.length)]
         currentGrid = adjacentElement
         path.push(currentGrid)
-        // get all adjacent elements. no filter
-        // calculate what element is next
-        // pick random from there
-        currentGrid.type = possibleObjects[Math.floor(Math.random() * possibleObjects.length)].type
+        const newAdjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
+        const compatibleElements = newAdjacentElements.filter(el => el.type !== 'air').reduce((acc, el) => {
+          const compatibleElements = possibleObjects.find(obj => obj.type === el.type).compatibleElements
+          compatibleElements.forEach(el1 => {
+            if(acc.includes(el1)) {
+              return acc
+            } else {
+              return addUniqueList(acc,[el1])
+            }
+          })
+          const notCompatibleElements = possibleObjects.find(obj => obj.type === el.type).notCompatibleElements
+          notCompatibleElements.forEach(el => {
+            if(acc.includes(el)) {
+              // remove from acc
+              acc = acc.filter(el => el !== el)
+            } else {
+              return acc
+            }
+          })
+          return acc
+        }, [])
+        const newType = compatibleElements[Math.floor(Math.random() * compatibleElements.length)]
+        currentGrid.type = newType
       }
     }
-  } else {
-    console.log('end')
-  }
+  } else { }
+}
+function addUniqueList( list, items) {
+  items.forEach(function(item) {
+    if (!list.includes(item)) {
+      list.push(item);
+    }
+  });
+  return list;
+}
+function getNextRandomAdjacentElements(i, j) {
+  const adjacentElements = getAdjacentElements(i, j).filter(el => el.type === 'air')
+  return adjacentElements
 }
 
 function getAdjacentElements(i, j) {
@@ -155,7 +189,6 @@ function getAdjacentElements(i, j) {
       grid[i-1][j],
       // filter out if not air
     ].filter(el => el !== undefined)
-    .filter(el => el.type === 'air')
   } else if (grid[i+1] === undefined) {
      return [
       grid[i][j+1],
@@ -163,7 +196,6 @@ function getAdjacentElements(i, j) {
       grid[i-1][j],
       // filter out if not air
     ].filter(el => el !== undefined)
-    .filter(el => el.type === 'air')
   } else if (grid[i-1] === undefined) {
      return [
       grid[i][j+1],
@@ -171,6 +203,5 @@ function getAdjacentElements(i, j) {
       grid[i+1][j],
       // filter out if not air
     ].filter(el => el !== undefined)
-    .filter(el => el.type === 'air')
   }
 }
