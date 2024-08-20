@@ -1,4 +1,4 @@
-let gridSize = 10
+let gridSize = 20
 let gridWidth = 80
 let grid = []
 let selectedElement = 'sand'
@@ -83,7 +83,7 @@ function setupSquares() {
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
-  frameRate(10);
+  frameRate(60);
   strokeWeight(1);
   colorMode(HSL, 255);
   setupSquares();
@@ -132,8 +132,9 @@ function draw() {
     } else { 
       const adjacentElements = getNextRandomAdjacentElements(currentGrid.i, currentGrid.j)
       if(adjacentElements.length === 0) {
+        console.log('h0', adjacentElements)
         for(let i = path.length - 1; i >= 0; i--) {
-          const elements = getAdjacentElements(path[i].i, path[i].j)
+          const elements = getNextRandomAdjacentElements(path[i].i, path[i].j)
           if(elements.length > 0) {
             const adjacentElement = elements[Math.floor(Math.random() * adjacentElements.length)]
             currentGrid = adjacentElement
@@ -170,28 +171,21 @@ function addUniqueList( list, items) {
 
 function getCompatibleElements(adjacentElements) {
     const combatibleAdjacentElements = adjacentElements.filter(el => el.type !== 'air')
-      const s1 = combatibleAdjacentElements.reduce((acc, el) => {
-        const compatibleElements = possibleObjects.find(obj => obj.type === el.type).compatibleElements
-        compatibleElements.forEach(el1 => {
-          if(!acc.includes(el1)) {
-            return addUniqueList(acc,[el1])
-          } 
-        })
-      }, [])
-
-      // console.log('h3', acc)
-      // const notCompatibleElements = possibleObjects.find(obj => obj.type === el.type).notCompatibleElements
-      // console.log('h3.1', notCompatibleElements)
-      // notCompatibleElements.forEach(el => {
-      //   if(acc.includes(el)) {
-      //     acc = acc.filter(el => el !== el)
-      //   }
-      // })
-      //   console.log('h3.2', acc)
-      // return acc
-
-  return s
-}
+    const s1 = combatibleAdjacentElements.reduce((acc, el) => {
+      const compatibleElements = possibleObjects.find(obj => obj.type === el.type).compatibleElements
+      compatibleElements.forEach(el1 => {
+        if(!acc.includes(el1)) {
+          return addUniqueList(acc,[el1])
+        } 
+      })
+      const notCompatibleElements = possibleObjects.find(obj => obj.type === el.type).notCompatibleElements
+      console.log('h1', acc)
+      acc = acc.filter(el => !notCompatibleElements.includes(el))
+      console.log("h2", acc)
+      return acc
+    }, [])
+  return s1
+    }
 
 
 function getNextRandomAdjacentElements(i, j) {
