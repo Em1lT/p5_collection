@@ -13,7 +13,6 @@ function setup() {
 
 function udpateHubs () {
   hubs.forEach((hub) => {
-    // const closest = dot.getClosestDots(dotsArrCopy, 3);
     hub.render()
     hub.update()
   })

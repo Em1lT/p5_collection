@@ -49,7 +49,7 @@ class Dot {
     // get the averate vector from the vectors
     if(!vectors) return
     vectors.forEach(vector => {
-      this.vel.add(p5.Vector.sub(this.speed, vector.speed)).limit(0.6)
+      this.vel.add(p5.Vector.sub(this.speed, vector.speed)).limit(0.5)
     })
   }
 
@@ -66,19 +66,23 @@ class Dot {
   }
   goToParent () {
     if(!this.parentLocation) return
-    this.vel.add(p5.Vector.sub(this.parentLocation, this.location))
-    this.vel.limit(5)
+    if (dist(this.location.x, this.location.y, this.parentLocation.x, this.parentLocation.y) < 100) {
+      this.speed = createVector(0, 0);
+    } else {
+      this.vel.add(p5.Vector.sub(this.parentLocation, this.location))
+      this.vel.limit(1)
+    }
   }
 
-  update (closestVectors) {
+  update (vectores) {
     // this.vel.add(this.vel)
-    // // this.steerAwayFromClosestVectors(closestVectors)
+    this.steerAwayFromClosestVectors(vectores)
     this.goToParent();
     this.speed.add(this.vel)
     this.speed.limit(3)
     // 
     this.location.add(this.speed);
-		// this.vel = createVector(0, 0);
+		this.vel = createVector(0, 0);
   }
 
 	renderPath() {
