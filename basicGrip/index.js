@@ -1,27 +1,40 @@
-let gridSize = 3
+let gridSize = 10
 let grid = []
-let size = 133
-let boxSize = size - 1
+let size
+let boxSize
 
 function setupSquares() {
   for (let i = 0; i < gridSize; i++ ) {
-    let tempGrid = []
+    grid[i] = []
     for (let j = 0; j < gridSize; j++ ) {
-      tempGrid.push({location: createVector(i * size,j * size, 1)})
+      grid[i][j] = {
+        location: {
+          x: i * size,
+          y: j * size
+        },
+        mark: false
+      }
     }
-    grid.push(tempGrid)
   }
 }
 
 function setup() {
   createCanvas(400, 400);
+  size = width / gridSize
+  boxSize = size
   setupSquares();
+  grid[0][0].mark = true
 }
 
 function drawSquares() {
   for (let i = 0; i < gridSize; i++ ) {
     for (let j = 0; j < gridSize; j++ ) {
-      square(grid[i][j].location.x, grid[i][j].location.y, boxSize)  
+      if (grid[i][j].mark) {
+        fill('red')
+      } else {
+        fill('white')
+      }
+      rect(grid[i][j].location.x, grid[i][j].location.y, boxSize, boxSize)
     }
   }
 }
