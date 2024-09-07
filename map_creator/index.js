@@ -1,5 +1,5 @@
-let gridSize = 20
-let gridWidth = 80
+let gridSize
+let gridWidth
 let grid = []
 let selectedElement = 'sand'
 let startCreation = false
@@ -8,6 +8,7 @@ let isMousePressed = false
 let isFirstTile = true
 let currentGrid = null;
 let canvasSize = 800 
+let slider;
 let lost = false
 let path = []
 let roads = []
@@ -83,14 +84,19 @@ function adjacentObjects(x, y) {
 }
 
 function setupSquares() {
+  gridSize = 10
+  gridWidth = width / gridSize
   for (let i = 0; i < gridSize; i++ ) {
-    let tempGrid = []
+    grid[i] = []
     for (let j = 0; j < gridSize; j++ ) {
-      const widthBox = width / gridSize * i 
-      const heightBox = height / gridSize * j 
-      tempGrid.push({type: 'air', location: createVector(widthBox, heightBox, 1), i: i, j:j})
+      grid[i][j] = {
+        location: {
+          x: i * gridWidth,
+          y: j * gridWidth
+        },
+        type: 'air',
+      }
     }
-    grid.push(tempGrid)
   }
 }
 
@@ -138,6 +144,7 @@ function drawSquares() {
       const widthBox = width / gridSize * i 
       const heightBox = height / gridSize * j 
       square(widthBox,heightBox, gridWidth)
+      rect(grid[i][j].location.x, grid[i][j].location.y, widthBox, heightBox)
       if(grid[i][j].type === 'sand') {
         fill(color('#f2d468'))
       } else if(grid[i][j].type === 'water') {
@@ -172,7 +179,7 @@ function updatePath() {
     if(isFirstTile) {
       let [i, j] = getRandomTile()
       isFirstTile = false
-      currentGrid = grid[0][0]
+      currentGrid = grid[i][j]
       currentGrid.type = 'land'
       path.push(currentGrid)
     } else { 
@@ -197,22 +204,31 @@ function updatePath() {
         currentGrid = adjacentElement
         path.push(currentGrid)
         const newAdjacentElements = getAdjacentElements(currentGrid.i, currentGrid.j)
-        const compatibleElements = getCompatibleElements(newAdjacentElements)
+        let compatibleElements = getCompatibleElements(newAdjacentElements)
         // if more water elements, then water
         // if land then land
+        if(slider.value() > 75) { // more water elements
+          if(compatibleElements.includes('water')) {
+            compatibleElements = [...compatibleElements, 'water', 'water']
+          }
+
+        } else if (slider.value() < 25) { // less water elements, more land
+          if(compatibleElements.includes('land')) {
+            compatibleElements = [...compatibleElements, 'land', 'land']
+          }
+        }
         const random = Math.floor(Math.random() * compatibleElements.length)
         const newType = compatibleElements[random]
         currentGrid.type = newType
       }
-    }
+    } 
   }
 }
 
 function draw() {
   background(220);
   drawSquares();
-
-  updatePath() // auto update path
+  updatePath()
   if(startCreation && !pauseCreation) {
     updatePath()
   }
