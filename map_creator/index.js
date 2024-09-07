@@ -1,4 +1,4 @@
-let gridSize
+let gridSize = 3
 let gridWidth
 let grid = []
 let selectedElement = 'sand'
@@ -84,12 +84,13 @@ function adjacentObjects(x, y) {
 }
 
 function setupSquares() {
-  gridSize = 10
   gridWidth = width / gridSize
   for (let i = 0; i < gridSize; i++ ) {
     grid[i] = []
     for (let j = 0; j < gridSize; j++ ) {
       grid[i][j] = {
+        i: i,
+        j: j,
         location: {
           x: i * gridWidth,
           y: j * gridWidth
@@ -122,8 +123,8 @@ function setup() {
       updatePath();
     });
   let b4 = createButton('calculate types');
-    b3.position(200, 900);
-    b3.mousePressed(() => {
+    b4.position(300, 900);
+    b4.mousePressed(() => {
       calculateTypes();
     });
   slider = createSlider(0, 100, 50, 1);
@@ -132,10 +133,13 @@ function setup() {
 }
 
 function calculateTypes() {
+  const types = {}
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
+      types[grid[i][j].type] = types[grid[i][j].type] ? types[grid[i][j].type] + 1 : 1
     }
   }
+  console.log(types)
 }
 
 function drawSquares() {
