@@ -24,7 +24,7 @@ function setupObstacles() {
   for (let i = 0; i < gridSize; i++ ) {
     for (let j = 0; j < gridSize; j++ ) {
       const s = Math.floor(Math.random() * 100)
-      if( s > 90 ) {
+      if( s > 80 ) {
         grid[i][j].obstacle = true;
       }
     }
