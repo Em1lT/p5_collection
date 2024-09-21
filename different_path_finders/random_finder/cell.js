@@ -1,9 +1,11 @@
 class Cell {
-  constructor(x, y) {
+  constructor(x, y, i, j) {
     this.location = {
       x: x,
       y: y,
     };
+    this.i = i;
+    this.j = j;
     this.finish = false;
     this.obstacle = false;
     this.mark = false;

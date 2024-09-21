@@ -10,7 +10,7 @@ function setup() {
 
 function draw() {
   background(220);
-  frameRate(2);
+  frameRate(10);
   grid.drawSquares();
   grid.pathFind();
 }
