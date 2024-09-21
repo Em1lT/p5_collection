@@ -1,33 +1,30 @@
-
 class Cell {
-
   constructor(x, y) {
     this.location = {
       x: x,
-      y: y
-    }
-    this.finish = false
-    this.obstacle = false
-    this.mark = false
+      y: y,
+    };
+    this.finish = false;
+    this.obstacle = false;
+    this.mark = false;
   }
 
   update({ finish, obstacle, mark }) {
-    this.finish = finish
-    this.obstacle = obstacle
-    this.mark = mark
+    this.finish = finish;
+    this.obstacle = obstacle;
+    this.mark = mark;
   }
 
   render() {
     if (this.mark) {
-      fill('red')
+      fill("red");
     } else if (this.finish) {
-      fill('green')
+      fill("green");
     } else if (this.obstacle) {
-      fill('black')
+      fill("black");
+    } else {
+      fill("white");
     }
-    else {
-      fill('white')
-    }
-    rect(this.x, this.y, boxSize, boxSize)
+    rect(this.x, this.y, boxSize, boxSize);
   }
 }
