@@ -1,4 +1,4 @@
-const gridSize = 4;
+const gridSize = 10;
 let grid;
 
 function setup() {
@@ -12,5 +12,7 @@ function draw() {
   background(220);
   frameRate(10);
   grid.drawSquares();
-  grid.pathFind();
+  if(!grid.finish) {
+    grid.pathFind();
+  }
 }
