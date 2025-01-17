@@ -1,4 +1,4 @@
-numOfDots = 50
+numOfDots = 100
 dots = [];
 walls = [];
 

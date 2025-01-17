@@ -121,7 +121,7 @@ class Dot {
 
        const heading = p5.Vector.sub(vector.location, this.location)
        // distance = dist(this.location.x, this.location.y, vector.location.x, vector.location.y)
-       this.vel.add(heading).limit(0.7)
+       this.vel.add(heading).limit(0.1)
      })
   }
 

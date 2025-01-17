@@ -10,7 +10,7 @@ function intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
   const x = x1 + t * (x2 - x1)
   const y = y1 + t * (y2 - y1)
 
-  if() {
+  if(x < 0 || x > width || y < 0 || y > height) {
     return undefined;
   }
 
@@ -51,6 +51,7 @@ function draw() {
 
   console.log(p)
   ellipse(p.x, p.y, 10)
+  // line(p.x, p.x, p.x + 100, )
 
   line(windowWidth / 2, windowHeight / 2, p.x || windowWidth / 3, p.y || windowHeight / 3)
 
