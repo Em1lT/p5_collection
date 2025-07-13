@@ -1,52 +1,15 @@
-let gridSize = 10;
-let gridWidth;
-let grid = [];
-let selectedElement = "air";
-let startCreation = false;
-let pauseCreation = false;
-let isMousePressed = false;
-let isFirstTile = true;
-let currentGrid = null;
-let canvasSize = 400;
-let slider;
-let lost = false;
-let path = [];
-let roads = [];
+let gridSize = 30;
+let canvasSize = 600;
+let grid;
 
-function setupGroundTiles() {
-  for (let i = 0; i < gridSize; i++) {
-      grid[i][gridSize-1].type = 'ground'
-      grid[i][gridSize-2].type = 'ground'
-  }
-}
-
-function setupTiles() {
-  gridWidth = width / gridSize;
-  for (let i = 0; i < gridSize; i++) {
-    grid[i] = [];
-    for (let j = 0; j < gridSize; j++) {
-      const ground = false // j < gridSize - 4
-      grid[i][j] = {
-        i: i,
-        j: j,
-        location: {
-          x: i * gridWidth,
-          y: j * gridWidth,
-        },
-        type: ground ? "ground": "air",
-      };
-    }
-  }
-  console.log(grid)
-}
 
 function setup() {
   createCanvas(canvasSize, canvasSize);
   frameRate(10);
   strokeWeight(1);
   colorMode(HSL, 255);
-  setupTiles();
-  setupGroundTiles();
+  grid = new Grid(gridSize);
+  grid.setup();
 }
 
 function fillSquares(type) {
@@ -62,19 +25,20 @@ function fillSquares(type) {
 }
 
 function drawSquares() {
+  const widthBox = (width / gridSize);
+  const heightBox = (height / gridSize);
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
-      const widthBox = (width / gridSize);
-      const heightBox = (height / gridSize);
-      fillSquares(grid[j][i].type);
-      rect(grid[j][i].location.x, grid[j][i].location.y, widthBox, heightBox);
+      const {type, location} = grid[i][j]
+      fillSquares(type);
+      rect(location.x, location.y, widthBox, heightBox);
     }
   }
 }
 
 function draw() {
   background(220);
-  drawSquares();
+  grid.render();
 }
 
 function getAdjacentElements(i, j) {
@@ -126,6 +90,7 @@ function logElement({ x, y }) {
         cell.location.y <= y && y < cell.location.y + cellHeight
       ) {
         console.log(cell);
+        console.log(getAdjacentElements(cell.i, cell.j))
         // Only log the current cell, not adjacent elements
       }
     }
