@@ -13,8 +13,14 @@ let lost = false;
 let path = [];
 let roads = [];
 
+function setupGroundTiles() {
+  for (let i = 0; i < gridSize; i++) {
+      grid[i][gridSize-1].type = 'ground'
+      grid[i][gridSize-2].type = 'ground'
+  }
+}
 
-function setupSquares() {
+function setupTiles() {
   gridWidth = width / gridSize;
   for (let i = 0; i < gridSize; i++) {
     grid[i] = [];
@@ -39,7 +45,8 @@ function setup() {
   frameRate(10);
   strokeWeight(1);
   colorMode(HSL, 255);
-  setupSquares();
+  setupTiles();
+  setupGroundTiles();
 }
 
 function fillSquares(type) {
