@@ -1,4 +1,3 @@
-let imgPath = ""; // Add path or base64 image here
 let img;
 
 const possibleChars = "GGGGggbbb~~``...";
