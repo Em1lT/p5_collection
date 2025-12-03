@@ -1,8 +1,7 @@
 let size = 100;
 let showImage = false;
 let arr = [];
-let posCharMap =
-  "@#$%^&*()_ZXCVBNM<>?";
+let posCharMap = "@#$%^&*()_ZXCVBNM<>?";
 
 function preload() {
   img = createImage(100, 100);
@@ -17,7 +16,7 @@ function setup() {
 
 function draw() {
   background(200);
-  frameRate(10);
+  frameRate(5);
   updateArr();
 }
 
