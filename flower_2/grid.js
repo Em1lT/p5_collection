@@ -3,11 +3,17 @@ function setupSquares() {
     grid[i] = []
     for (let j = 0; j < gridSize; j++ ) {
       grid[i][j] = {
+        length: 0,
+        grid: {
+          x: i,
+          y: j
+        },
         location: {
           x: i * size,
           y: j * size
         },
-        type: "air" // ground, flower_base, flower, 
+        type: "air", // ground, flower_base, flower, 
+        connectedNodes: []
       }
     }
   }
@@ -23,8 +29,14 @@ function setupGround(){
   return ground
 }
 
-function setupSeeds(soil){
-
+function setupSeeds(soilArr){
+  const seeds = []
+  for(let i = 0; i < 1; i++) {
+    const plant = random(soilArr) // p5 function
+    plant.type = "plant"
+    seeds.push(plant)
+  }
+  return seeds
 }
 
 
@@ -34,10 +46,15 @@ function drawSquares() {
       if (grid[i][j].type === "air") {
         fill('lightblue')
       } else if (grid[i][j].type === "ground") {
-        fill('green')
-      } else if (grid[i][j].type === "ground") {
+        fill('darkgreen')
+      } else if (grid[i][j].type === "plant") {
         fill('lightgreen')
-      } else {
+      } else if (grid[i][j].type === "flower_base") {
+        fill('green')
+      } else if (grid[i][j].type === "flower") {
+        fill('brown')
+      }
+      else {
         fill('')
       }
       rect(grid[i][j].location.x, grid[i][j].location.y, boxSize, boxSize)
