@@ -13,6 +13,10 @@ function setupSquares() {
           y: j * size
         },
         type: "air", // ground, flower_base, flower, 
+        maxHeight: false,
+        height: random(5,25),
+        color: random(['yellow', 'lightyellow', 'red', 'darkred', 'lightred', 'blue', 'orange', 'white']),
+        done: false,
         connectedNodes: []
       }
     }
@@ -24,6 +28,7 @@ function setupGround(){
   for (let i = 0; i <= gridSize - 1; i++ ) {
     const soil = grid[i][gridSize-1]
     soil.type = "ground"
+    grid.color = 
     ground.push(soil)
   }
   return ground
@@ -31,7 +36,7 @@ function setupGround(){
 
 function setupSeeds(soilArr){
   const seeds = []
-  for(let i = 0; i < 1; i++) {
+  for(let i = 0; i < 25; i++) {
     const plant = random(soilArr) // p5 function
     plant.type = "plant"
     seeds.push(plant)
@@ -53,8 +58,9 @@ function drawSquares() {
         fill('green')
       } else if (grid[i][j].type === "flower") {
         fill('brown')
-      }
-      else {
+      } else if (grid[i][j].type === "pedal") {
+        fill(grid[i][j].color)
+      } else {
         fill('')
       }
       rect(grid[i][j].location.x, grid[i][j].location.y, boxSize, boxSize)
